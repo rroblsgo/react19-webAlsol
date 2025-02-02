@@ -13,9 +13,19 @@ function getProvincias(properties: Property[]) {
   return [...new Set(provincias)];
 }
 
-function getCiudades(properties: Property[]) {
-  const ciudades = properties.map((property) => property.city);
-  return [...new Set(ciudades)];
+function getCiudadesPorProvincia(properties: Property[]) {
+  const ciudadesPorProvincia: Record<string, string[]> = {};
+
+  properties.forEach((property) => {
+    if (!ciudadesPorProvincia[property.provincia]) {
+      ciudadesPorProvincia[property.provincia] = [];
+    }
+    if (!ciudadesPorProvincia[property.provincia].includes(property.city)) {
+      ciudadesPorProvincia[property.provincia].push(property.city);
+    }
+  });
+
+  return ciudadesPorProvincia;
 }
 
 const App: React.FC = () => {
@@ -37,14 +47,18 @@ const App: React.FC = () => {
     getProperties();
   }, []);
 
-  if (loading) return <div>Loading properties...</div>;
+  if (loading)
+    return (
+      <div className="mx-auto max-w-6xl p-5 text-xl">
+        Cargando Propiedades...
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   const provincias = getProvincias(properties);
-  console.log(provincias);
-
-  const ciudades = getCiudades(properties);
-  console.log(ciudades);
+  // console.log(provincias);
+  const ciudadesPorProvincia = getCiudadesPorProvincia(properties);
+  console.log(ciudadesPorProvincia);
 
   return (
     <FilterProvider>
@@ -52,7 +66,13 @@ const App: React.FC = () => {
         <Routes>
           <Route
             path="/"
-            element={<PropertiesList properties={properties} />}
+            element={
+              <PropertiesList
+                properties={properties}
+                provincias={provincias}
+                ciudadesPorProvincia={ciudadesPorProvincia}
+              />
+            }
           />
           <Route path="/property/:id" element={<PropertyDetail />} />
           <Route path="/cards" element={<Cards />} />

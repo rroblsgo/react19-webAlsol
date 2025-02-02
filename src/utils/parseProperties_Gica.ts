@@ -34,19 +34,17 @@ export interface Property {
 function getImages(node: Element) {
   // console.log('node:', node);
   const images: { url: string; tag: string }[] = [];
-  const numFotos = '5';
+  const numFotos = 50;
   // const numFotos = node.getElementsByTagName('numfotos')[0].textContent || '5';
 
-  for (let i = 1; i <= Number(numFotos); i++) {
+  for (let i = 1; i <= numFotos; i++) {
     const fotoKey = `foto${i}`;
     if (node.getElementsByTagName(fotoKey)[0]) {
       images.push({
         url: node.getElementsByTagName(fotoKey)[0].textContent || '',
-        tag:
-          node.getElementsByTagName(fotoKey)[0].getAttribute('eti') ||
-          'unknown',
+        tag: node.getElementsByTagName(fotoKey)[0].getAttribute('eti') || ' ',
       });
-    }
+    } else break;
   }
   return images; //
 }

@@ -6,9 +6,11 @@ import { useSearchParams } from 'react-router-dom';
 import { useFilterContext } from '../context/FilterContext';
 import SearchBar from './SearchBar';
 
-const PropertiesList: React.FC<{ properties: Property[] }> = ({
-  properties,
-}) => {
+const PropertiesList: React.FC<{
+  properties: Property[];
+  provincias: string[];
+  ciudadesPorProvincia: Record<string, string[]>;
+}> = ({ properties, provincias, ciudadesPorProvincia }) => {
   const { filters, setFilters } = useFilterContext();
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,37 +19,6 @@ const PropertiesList: React.FC<{ properties: Property[] }> = ({
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const itemsPerPage = 9;
 
-  // Validate property price as a number
-  // const parsePrice = (price: string | number | undefined): number => {
-  //   return typeof price === 'number' ? price : parseFloat(price || '0');
-  // };
-
-  // Update filtered properties whenever the filters or properties change
-  // useEffect(() => {
-  //   const filterProperties = () => {
-  //     const filtered = properties.filter((property) => {
-  //       const matchesCity = city
-  //         ? property.city?.toLowerCase().includes(city.toLowerCase())
-  //         : true;
-
-  //       const matchesPrice =
-  //         (minPrice === '' ||
-  //           parsePrice(property.price) >= parseFloat(minPrice)) &&
-  //         (maxPrice === '' ||
-  //           parsePrice(property.price) <= parseFloat(maxPrice));
-
-  //       const matchesReference = reference
-  //         ? property.ref?.toLowerCase().includes(reference.toLowerCase())
-  //         : true;
-
-  //       return matchesCity && matchesPrice && matchesReference;
-  //     });
-
-  //     setFilteredProperties(filtered);
-  //   };
-
-  //   filterProperties();
-  // }, [city, minPrice, maxPrice, reference, properties]);
   useEffect(() => {
     const filtered = properties.filter((property) => {
       const matchesCity = filters.city
@@ -87,10 +58,17 @@ const PropertiesList: React.FC<{ properties: Property[] }> = ({
     <div className="bg-gray-100">
       <SearchBar
         totalProps={totalProps}
+        provincias={provincias}
+        ciudadesPorProvincia={ciudadesPorProvincia}
+        selectedProvincia={filters.provincia}
+        selectedCity={filters.city}
         city={filters.city}
         minPrice={filters.minPrice}
         maxPrice={filters.maxPrice}
         reference={filters.reference}
+        onProvinciaChange={(value) =>
+          setFilters((prev) => ({ ...prev, provincia: value, city: '' }))
+        }
         onCityChange={(value) =>
           setFilters((prev) => ({ ...prev, city: value }))
         }

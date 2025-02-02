@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface Filters {
+  provincia: string;
   city: string;
   minPrice: string;
   maxPrice: string;
@@ -19,6 +20,7 @@ export const FilterProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [filters, setFilters] = useState<Filters>({
+    provincia: '',
     city: '',
     minPrice: '',
     maxPrice: '',

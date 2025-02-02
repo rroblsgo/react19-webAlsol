@@ -2,10 +2,15 @@ import React from 'react';
 
 interface SearchBarProps {
   totalProps: number;
+  provincias: string[];
+  ciudadesPorProvincia: Record<string, string[]>;
+  selectedProvincia: string;
+  selectedCity: string;
   city: string;
   minPrice: string;
   maxPrice: string;
   reference: string;
+  onProvinciaChange: (value: string) => void;
   onCityChange: (value: string) => void;
   onMinPriceChange: (value: string) => void;
   onMaxPriceChange: (value: string) => void;
@@ -14,10 +19,15 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({
   totalProps,
+  provincias,
+  ciudadesPorProvincia,
+  selectedProvincia,
+  selectedCity,
   city,
   minPrice,
   maxPrice,
   reference,
+  onProvinciaChange,
   onCityChange,
   onMinPriceChange,
   onMaxPriceChange,
@@ -31,6 +41,41 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <p>Total {totalProps}</p>
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Provincia Dropdown */}
+          <div className="mb-4">
+            <label className="block font-medium mb-1">Provincia</label>
+            <select
+              value={selectedProvincia}
+              onChange={(e) => onProvinciaChange(e.target.value)}
+              className="border rounded-md p-2 w-full"
+            >
+              <option value="">Seleccione Provincia</option>
+              {provincias.map((provincia) => (
+                <option key={provincia} value={provincia}>
+                  {provincia}
+                </option>
+              ))}
+            </select>
+          </div>
+          {/* City Dropdown (Filtered by Provincia) */}
+          <div className="mb-4">
+            <label className="block font-medium mb-1">Ciudad</label>
+            <select
+              value={selectedCity}
+              onChange={(e) => onCityChange(e.target.value)}
+              className="border rounded-md p-2 w-full"
+              disabled={!selectedProvincia}
+            >
+              <option value="">Seleccione Ciudad</option>
+              {selectedProvincia &&
+                ciudadesPorProvincia[selectedProvincia]?.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+            </select>
+          </div>
+          {/* zona Dropdown (Filtered by city) */}
           <div className="mb-4">
             <label className="block font-medium mb-1">Ciudad(contiene)</label>
             <input
@@ -41,7 +86,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               className="border rounded-md p-2 w-full"
             />
           </div>
-
+          {/* Price Range */}
           <div className="mb-4">
             <label className="block font-medium mb-1">
               Rango de precios de venta
@@ -63,7 +108,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               />
             </div>
           </div>
-
+          {/* Referencia cambiar a tipo dropdown */}
           <div>
             <label className="block font-medium mb-1">
               Referencia (contiene)
@@ -76,6 +121,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               className="border rounded-md p-2 w-full"
             />
           </div>
+          {/* Agencia Dropdown  */}
         </div>
       </div>
     </div>
