@@ -47,12 +47,12 @@ const App: React.FC = () => {
     getProperties();
   }, []);
 
-  if (loading)
-    return (
-      <div className="mx-auto max-w-6xl p-5 text-xl">
-        Cargando Propiedades...
-      </div>
-    );
+  // if (loading)
+  //   return (
+  //     <div className="mx-auto max-w-6xl p-5 text-xl">
+  //       Cargando Propiedades...
+  //     </div>
+  //   );
   if (error) return <div>Error: {error}</div>;
 
   const provincias = getProvincias(properties);
@@ -71,6 +71,7 @@ const App: React.FC = () => {
                 properties={properties}
                 provincias={provincias}
                 ciudadesPorProvincia={ciudadesPorProvincia}
+                loading={loading}
               />
             }
           />

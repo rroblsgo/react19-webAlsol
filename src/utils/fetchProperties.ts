@@ -1,6 +1,7 @@
 import { parseProperties, Property } from './parseProperties_Gica';
 
 export const fetchProperties = async (): Promise<Property[]> => {
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await fetch('/api/properties');
   // const response = await fetch('properties.xml');
 
@@ -27,5 +28,5 @@ export const fetchProperties = async (): Promise<Property[]> => {
     return a.city.localeCompare(b.city, undefined, { sensitivity: 'base' });
   });
   // console.log(sortedProperties);
-  return sortedProperties;
+  return sortedProperties.slice();
 };

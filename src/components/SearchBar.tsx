@@ -34,11 +34,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onReferenceChange,
 }) => {
   return (
-    <div className="h-custom-search flex items-center justify-center">
-      <div className="p-4 rounded-md shadow-md  max-w-6xl mx-auto">
-        <span className="text-2xl font-bold mb-4 flex flex-row justify-between">
+    // <div className="h-custom-search flex items-center justify-center">
+    <div
+      className="h-custom-search bg-cover bg-center bg-no-repeat flex items-center justify-center"
+      style={{ backgroundImage: "url('/menu-fondo.jpg')" }}
+    >
+      <div className="p-4 border border-amber-500 rounded-md shadow-md  max-w-6xl mx-auto">
+        <img src="/cropped-Logotipo-RE-Claim.png" alt="" />
+        <span className="text-xl font-light mb-4 flex flex-row justify-between">
           <p>Seleccionar Propiedades</p>
-          <p>Total {totalProps}</p>
+          {totalProps > 0 ? (
+            <p className="font-semibold">Total {totalProps}</p>
+          ) : (
+            <p>Buscando...</p>
+          )}
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Provincia Dropdown */}

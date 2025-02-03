@@ -10,7 +10,8 @@ const PropertiesList: React.FC<{
   properties: Property[];
   provincias: string[];
   ciudadesPorProvincia: Record<string, string[]>;
-}> = ({ properties, provincias, ciudadesPorProvincia }) => {
+  loading: boolean;
+}> = ({ properties, provincias, ciudadesPorProvincia, loading }) => {
   const { filters, setFilters } = useFilterContext();
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,6 +57,10 @@ const PropertiesList: React.FC<{
 
   return (
     <div className="bg-top-nav bg-center bg-cover bg-no-repeat">
+      {/* <div
+      className="bg-cover bg-center bg-no-repeat min-h-[300px] sm:min-h-[400px] flex items-center justify-center"
+      style={{ backgroundImage: "url('/menu-fondo.jpg')" }}
+    > */}
       <SearchBar
         totalProps={totalProps}
         provincias={provincias}
@@ -82,20 +87,34 @@ const PropertiesList: React.FC<{
           setFilters((prev) => ({ ...prev, reference: value }))
         }
       />
-
-      <div className="bg-gray-100">
-        <h1 className="text-2xl font-bold text-center mb-2"></h1>
-        <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-          {currentProperties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
+      {loading ? (
+        // 🔹 Show Skeleton Loader Instead of Blank Screen
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div
+              key={index}
+              className="w-full h-64 bg-gray-300 animate-pulse rounded-lg"
+            ></div>
           ))}
         </div>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      ) : currentProperties.length > 0 ? (
+        // 🔹 Show Properties Once Fetched
+        <div className="bg-gray-100">
+          <h1 className="text-2xl font-bold text-center mb-2"></h1>
+          <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            {currentProperties.map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      ) : (
+        <p className="text-center text-gray-500">No properties found.</p>
+      )}
     </div>
   );
 };
