@@ -34,7 +34,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onReferenceChange,
 }) => {
   return (
-    <div className="bg-gray-100 ">
+    <div className="h-custom-search flex items-center justify-center">
       <div className="p-4 rounded-md shadow-md  max-w-6xl mx-auto">
         <span className="text-2xl font-bold mb-4 flex flex-row justify-between">
           <p>Seleccionar Propiedades</p>

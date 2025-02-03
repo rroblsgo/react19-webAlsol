@@ -55,7 +55,7 @@ const PropertiesList: React.FC<{
   };
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-top-nav bg-center bg-cover bg-no-repeat">
       <SearchBar
         totalProps={totalProps}
         provincias={provincias}

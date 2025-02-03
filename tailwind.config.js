@@ -2,7 +2,14 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'top-nav': "url('/menu-fondo.jpg')",
+      },
+      height: {
+        'custom-search': '50rem', // Adjust height as needed
+      },
+    },
   },
   plugins: [],
 };
