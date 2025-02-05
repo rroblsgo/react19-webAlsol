@@ -65,7 +65,7 @@ const PropertyDetail: React.FC = () => {
     return <div className="text-center">Loading property details...</div>;
   }
   const latitude = parseFloat(property.latitud);
-  const longitude = parseFloat(property.altitud);
+  const longitud = parseFloat(property.longitud);
   // console.log(latitude, longitude);
 
   return (
@@ -120,7 +120,7 @@ const PropertyDetail: React.FC = () => {
                   <li>M.Terraza: {property.m_terraza} m²</li>
                 ) : null}
                 <li>
-                  Rooms: {property.habdobles} dobles, {property.habitaciones}{' '}
+                  Rooms: {property.habdobles} dobles, {property.habsimples}{' '}
                   simples
                 </li>
                 <li>
@@ -129,14 +129,15 @@ const PropertyDetail: React.FC = () => {
               </ul>
               <ul className="list-disc ml-10 mt-2 text-gray-600">
                 <li>Acción: {property.accion}</li>
-                {property.accion === 'Vender' ? (
+                {Number(property.price) > 0 ? (
                   <li>Precio: {priceFormat(Number(property.price))}</li>
-                ) : (
+                ) : null}
+                {Number(property.precio_alquiler) > 0 ? (
                   <li>
                     Precio_Alq: {priceFormat(Number(property.precio_alquiler))}{' '}
                     / mes
                   </li>
-                )}
+                ) : null}
                 <li>Agente: {property.agente}</li>
                 <li>Email_Agente: {property.email_agente}</li>
                 <li>Tlf_Agente: {property.tlf_agente}</li>
@@ -183,7 +184,7 @@ const PropertyDetail: React.FC = () => {
           Mapa de situación
         </h2>
         <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-2xl">
-          <PropertyMap latitude={latitude} longitude={longitude} />
+          <PropertyMap latitud={latitude} longitud={longitud} />
         </div>
       </div>
     </div>

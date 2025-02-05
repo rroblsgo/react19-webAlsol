@@ -3,12 +3,12 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 
 interface PropertyMapProps {
-  latitude: number;
-  longitude: number;
+  latitud: number;
+  longitud: number;
 }
 
-const PropertyMap: React.FC<PropertyMapProps> = ({ latitude, longitude }) => {
-  const center: LatLngExpression = [latitude, longitude];
+const PropertyMap: React.FC<PropertyMapProps> = ({ latitud, longitud }) => {
+  const center: LatLngExpression = [latitud, longitud];
 
   return (
     <div className="w-full h-96">
@@ -19,9 +19,9 @@ const PropertyMap: React.FC<PropertyMapProps> = ({ latitude, longitude }) => {
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker position={[latitude, longitude]}>
+        <Marker position={[latitud, longitud]}>
           <Popup>
-            Property Location: {latitude.toFixed(5)}, {longitude.toFixed(5)}
+            Property Location: {latitud.toFixed(5)}, {longitud.toFixed(5)}
           </Popup>
         </Marker>
       </MapContainer>

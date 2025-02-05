@@ -28,6 +28,16 @@ function getCiudadesPorProvincia(properties: Property[]) {
   return ciudadesPorProvincia;
 }
 
+function getTipos(properties: Property[]) {
+  const tipos = properties.map((property) => property.tipo_ofer);
+  return [...new Set(tipos)];
+}
+
+function getAgencias(properties: Property[]) {
+  const agencias = properties.map((property) => property.agencia);
+  return [...new Set(agencias)];
+}
+
 const App: React.FC = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +68,11 @@ const App: React.FC = () => {
   const provincias = getProvincias(properties);
   // console.log(provincias);
   const ciudadesPorProvincia = getCiudadesPorProvincia(properties);
-  console.log(ciudadesPorProvincia);
+  // console.log(ciudadesPorProvincia);
+  const tipos = getTipos(properties).sort();
+  // console.log(tipos);
+  const agencias = getAgencias(properties).sort();
+  // console.log(agencias);
 
   return (
     <FilterProvider>
@@ -71,6 +85,8 @@ const App: React.FC = () => {
                 properties={properties}
                 provincias={provincias}
                 ciudadesPorProvincia={ciudadesPorProvincia}
+                tipos={tipos}
+                agencias={agencias}
                 loading={loading}
               />
             }

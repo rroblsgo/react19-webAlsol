@@ -46,7 +46,7 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
             <div className="flex items-center">
               <FaBed className="mr-2 text-blue-500" />
               <span>
-                {property.habdobles} D, {property.habitaciones} S
+                {property.habdobles} D, {property.habsimples} S
               </span>
             </div>
             <div className="flex items-center">

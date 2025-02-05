@@ -10,11 +10,17 @@ interface SearchBarProps {
   minPrice: string;
   maxPrice: string;
   reference: string;
+  tipos: string[];
+  selectedTipo: string;
+  agencias: string[];
+  selectedAgencia: string;
   onProvinciaChange: (value: string) => void;
   onCityChange: (value: string) => void;
   onMinPriceChange: (value: string) => void;
   onMaxPriceChange: (value: string) => void;
   onReferenceChange: (value: string) => void;
+  onTipoChange: (value: string) => void;
+  onAgenciaChange: (value: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -27,12 +33,19 @@ const SearchBar: React.FC<SearchBarProps> = ({
   minPrice,
   maxPrice,
   reference,
+  tipos,
+  selectedTipo,
+  agencias,
+  selectedAgencia,
   onProvinciaChange,
   onCityChange,
   onMinPriceChange,
   onMaxPriceChange,
   onReferenceChange,
+  onTipoChange,
+  onAgenciaChange,
 }) => {
+  console.log(city); // TODO remove
   return (
     // <div className="h-custom-search flex items-center justify-center">
     <div
@@ -46,7 +59,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           {totalProps > 0 ? (
             <p className="font-semibold">Total {totalProps}</p>
           ) : (
-            <p>Buscando...</p>
+            <p>buscando / no encontradas</p>
           )}
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -55,7 +68,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <label className="block font-medium mb-1">Provincia</label>
             <select
               value={selectedProvincia}
-              onChange={(e) => onProvinciaChange(e.target.value)}
+              // onChange={(e) => onProvinciaChange(e.target.value)}
+              onChange={(e) => {
+                const provincia = e.target.value;
+                onProvinciaChange(provincia);
+                onCityChange(''); // ✅ Reset city when provincia changes
+              }}
               className="border rounded-md p-2 w-full"
             >
               <option value="">Seleccione Provincia</option>
@@ -85,13 +103,26 @@ const SearchBar: React.FC<SearchBarProps> = ({
             </select>
           </div>
           {/* zona Dropdown (Filtered by city) */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block font-medium mb-1">Ciudad(contiene)</label>
             <input
               type="text"
               value={city}
               placeholder="Ciudad"
               onChange={(e) => onCityChange(e.target.value)}
+              className="border rounded-md p-2 w-full"
+            />
+          </div> */}
+          {/* Referencia contiene */}
+          <div>
+            <label className="block font-medium mb-1">
+              Referencia (contiene)
+            </label>
+            <input
+              type="text"
+              value={reference}
+              placeholder="Referencia"
+              onChange={(e) => onReferenceChange(e.target.value)}
               className="border rounded-md p-2 w-full"
             />
           </div>
@@ -117,20 +148,43 @@ const SearchBar: React.FC<SearchBarProps> = ({
               />
             </div>
           </div>
-          {/* Referencia cambiar a tipo dropdown */}
-          <div>
-            <label className="block font-medium mb-1">
-              Referencia (contiene)
-            </label>
-            <input
-              type="text"
-              value={reference}
-              placeholder="Referencia"
-              onChange={(e) => onReferenceChange(e.target.value)}
+          {/* Tipo Dropdown */}
+          <div className="mb-4">
+            <label className="block font-medium mb-1">Tipo</label>
+            <select
+              value={selectedTipo}
+              onChange={(e) => onTipoChange(e.target.value)}
               className="border rounded-md p-2 w-full"
-            />
+            >
+              <option value="">Seleccione Tipo</option>
+              {tipos.map((tipo) => (
+                <option key={tipo} value={tipo}>
+                  {tipo}
+                </option>
+              ))}
+            </select>
           </div>
-          {/* Agencia Dropdown  */}
+          {/* Agencia Dropdown */}
+          <div className="mb-4">
+            <label className="block font-medium mb-1">Agencia</label>
+            <select
+              value={selectedAgencia}
+              onChange={(e) => onAgenciaChange(e.target.value)}
+              className="border rounded-md p-2 w-full"
+            >
+              <option value="">Seleccione Agencia</option>
+              {agencias.map((agencia) => (
+                <option key={agencia} value={agencia}>
+                  {agencia}
+                </option>
+              ))}
+            </select>
+          </div>
+          {totalProps === 0 && (
+            <p className="text-red-500 font-semibold">
+              Revise los criterios de selección
+            </p>
+          )}
         </div>
       </div>
     </div>

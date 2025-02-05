@@ -10,8 +10,17 @@ const PropertiesList: React.FC<{
   properties: Property[];
   provincias: string[];
   ciudadesPorProvincia: Record<string, string[]>;
+  tipos: string[];
+  agencias: string[];
   loading: boolean;
-}> = ({ properties, provincias, ciudadesPorProvincia, loading }) => {
+}> = ({
+  properties,
+  provincias,
+  ciudadesPorProvincia,
+  tipos,
+  agencias,
+  loading,
+}) => {
   const { filters, setFilters } = useFilterContext();
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,8 +31,23 @@ const PropertiesList: React.FC<{
 
   useEffect(() => {
     const filtered = properties.filter((property) => {
-      const matchesCity = filters.city
-        ? property.city.toLowerCase().includes(filters.city.toLowerCase())
+      // ✅ Show all properties in the selected provincia, even if city is empty
+      const matchesProvincia = filters.provincia
+        ? property.provincia === filters.provincia
+        : true;
+
+      // const matchesCity = filters.city
+      //   ? property.city.toLowerCase().includes(filters.city.toLowerCase())
+      //   : true;
+
+      const matchesCity = filters.city ? property.city == filters.city : true;
+
+      const matchesTipo = filters.tipo
+        ? property.tipo_ofer == filters.tipo
+        : true;
+
+      const matchesAgencia = filters.agencia
+        ? property.agencia == filters.agencia
         : true;
 
       const matchesPrice =
@@ -36,7 +60,14 @@ const PropertiesList: React.FC<{
         ? property.ref?.toLowerCase().includes(filters.reference.toLowerCase())
         : true;
 
-      return matchesCity && matchesPrice && matchesReference;
+      return (
+        matchesProvincia &&
+        matchesCity &&
+        matchesPrice &&
+        matchesReference &&
+        matchesTipo &&
+        matchesAgencia
+      );
     });
 
     setFilteredProperties(filtered);
@@ -71,6 +102,10 @@ const PropertiesList: React.FC<{
         minPrice={filters.minPrice}
         maxPrice={filters.maxPrice}
         reference={filters.reference}
+        tipos={tipos}
+        selectedTipo={filters.tipo}
+        agencias={agencias}
+        selectedAgencia={filters.agencia}
         onProvinciaChange={(value) =>
           setFilters((prev) => ({ ...prev, provincia: value, city: '' }))
         }
@@ -85,6 +120,12 @@ const PropertiesList: React.FC<{
         }
         onReferenceChange={(value) =>
           setFilters((prev) => ({ ...prev, reference: value }))
+        }
+        onTipoChange={(value) =>
+          setFilters((prev) => ({ ...prev, tipo: value }))
+        }
+        onAgenciaChange={(value) =>
+          setFilters((prev) => ({ ...prev, agencia: value }))
         }
       />
       {loading ? (
@@ -113,7 +154,9 @@ const PropertiesList: React.FC<{
           />
         </div>
       ) : (
-        <p className="text-center text-gray-500">No properties found.</p>
+        <p className="text-center text-gray-500">
+          No se encuentran propiedades
+        </p>
       )}
     </div>
   );

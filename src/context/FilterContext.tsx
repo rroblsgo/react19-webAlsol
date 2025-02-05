@@ -7,6 +7,8 @@ interface Filters {
   minPrice: string;
   maxPrice: string;
   reference: string;
+  tipo: string;
+  agencia: string;
 }
 
 interface FilterContextType {
@@ -25,6 +27,8 @@ export const FilterProvider: React.FC<{ children: ReactNode }> = ({
     minPrice: '',
     maxPrice: '',
     reference: '',
+    tipo: '',
+    agencia: '',
   });
 
   return (

@@ -11,7 +11,7 @@ export interface Property {
   zona: string;
   image: string;
   habdobles: string;
-  habitaciones: string;
+  habsimples: string;
   banyos: string;
   aseos: string;
   m_cons: string;
@@ -26,9 +26,9 @@ export interface Property {
   email_agente: string;
   tlf_agente: string;
   latitud: string;
-  altitud: string;
+  longitud: string;
+  agencia: string;
   images: { url: string; tag: string }[];
-  // [key: string]: string;
 }
 
 function getImages(node: Element) {
@@ -68,8 +68,7 @@ export const parseProperties = (xml: string): Property[] => {
     zona: node.getElementsByTagName('zona')[0]?.textContent || '',
     image: node.getElementsByTagName('foto1')[0]?.textContent || '',
     habdobles: node.getElementsByTagName('habdobles')[0]?.textContent || '',
-    habitaciones:
-      node.getElementsByTagName('habitaciones')[0]?.textContent || '',
+    habsimples: node.getElementsByTagName('habitaciones')[0]?.textContent || '',
     m_cons: node.getElementsByTagName('m_cons')[0]?.textContent || '',
     m_uties: node.getElementsByTagName('m_uties')[0]?.textContent || '',
     m_parcela: node.getElementsByTagName('m_parcela')[0]?.textContent || '',
@@ -86,9 +85,10 @@ export const parseProperties = (xml: string): Property[] => {
       node.getElementsByTagName('email_agente')[0]?.textContent || '',
     tlf_agente: node.getElementsByTagName('tlf_agente')[0]?.textContent || '',
     latitud: node.getElementsByTagName('latitud')[0]?.textContent || '',
-    altitud: node.getElementsByTagName('altitud')[0]?.textContent || '',
+    longitud: node.getElementsByTagName('altitud')[0]?.textContent || '',
     num_fotos:
       Number(node.getElementsByTagName('numfotos')[0]?.textContent) || 0,
+    agencia: node.getElementsByTagName('agencia')[0]?.textContent || '',
     images: getImages(node),
   }));
 
