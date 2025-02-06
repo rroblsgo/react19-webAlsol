@@ -28,5 +28,5 @@ export const fetchProperties = async (): Promise<Property[]> => {
     return a.city.localeCompare(b.city, undefined, { sensitivity: 'base' });
   });
   // console.log(sortedProperties);
-  return sortedProperties.slice();
+  return sortedProperties;
 };
