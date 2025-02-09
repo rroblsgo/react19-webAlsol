@@ -8,7 +8,7 @@ const fetchAPI = async () => {
     const TOKEN = import.meta.env.VITE_TOKEN as string;
     console.log(TOKEN);
 
-    const response = await fetch(`${BASE_URL}/propiedades/?cod_ofer=10367718`, {
+    const response = await fetch(`${BASE_URL}/propiedades/?cod_ofer=23668105`, {
       method: 'GET',
       headers: {
         Token: `${TOKEN}`,

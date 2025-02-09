@@ -5,12 +5,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // '/api/properties': {
-      //   target: 'https://procesos.apinmo.com',
-      //   changeOrigin: true,
-      //   rewrite: (path) =>
-      //     path.replace(/^\/api\/properties/, '/xml/v2/WvM6fwnL/7421-web.xml'),
-      // },
+      '/api/propertiesAlsol': {
+        target: 'https://procesos.apinmo.com',
+        changeOrigin: true,
+        rewrite: (path) =>
+          path.replace(
+            /^\/api\/propertiesAlsol/,
+            '/xml/v2/WvM6fwnL/7421-web.xml'
+          ),
+      },
       '/api/properties': {
         target: 'https://procesos.apinmo.com',
         changeOrigin: true,

@@ -5,6 +5,7 @@ import ImageCarousel from './ImageCarousel';
 import { newDescription } from '../utils/formatDescription';
 import { priceFormat } from '../utils/priceFormat';
 import PropertyMap from './PropertyMap';
+import { FaCheck } from 'react-icons/fa';
 
 const PropertyDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -145,6 +146,41 @@ const PropertyDetail: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
+            Extras
+          </h2>
+          <div className=" p-8 bg-white border border-gray-200 rounded-lg shadow-2xl">
+            {
+              <ul className="list-none ml-10 mt-2 text-gray-600">
+                {property.extras
+                  .filter(
+                    (extra) =>
+                      extra.value !== '_' &&
+                      extra.value !== '0' &&
+                      extra.value !== ' '
+                  )
+                  .map((extra, index) => (
+                    <li
+                      key={index}
+                      className="py-2 border border-gray-500 border-b-1 border-r-0 border-t-0 border-l-0 flex justify-between w-[400px]"
+                    >
+                      <div>{extra.key}</div>
+                      {extra.value === 'X' ||
+                      extra.value === '1' ||
+                      Number(extra.value) > 1 ? (
+                        <FaCheck />
+                      ) : (
+                        <div>{extra.value}</div>
+                      )}
+                    </li>
+                  ))}
+              </ul>
+            }
+          </div>
+        </div>
+
         <div className="mt-8">
           <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
             Contacto
@@ -154,18 +190,18 @@ const PropertyDetail: React.FC = () => {
               <input
                 type="text"
                 className="w-full px-4 py-2 border rounded-lg"
-                placeholder="Your Name"
+                placeholder="Su Nombre"
                 required
               />
               <input
                 type="email"
                 className="w-full px-4 py-2 border rounded-lg"
-                placeholder="Your Email"
+                placeholder="Su Email"
                 required
               />
               <textarea
                 className="w-full px-4 py-2 border rounded-lg"
-                placeholder="Your Message"
+                placeholder="Su mensaje"
                 rows={4}
                 required
               />
@@ -173,7 +209,7 @@ const PropertyDetail: React.FC = () => {
                 type="submit"
                 className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
               >
-                Send Message
+                Enviar mensaje
               </button>
             </form>
           </div>

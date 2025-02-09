@@ -106,27 +106,34 @@ const PropertiesList: React.FC<{
         selectedTipo={filters.tipo}
         agencias={agencias}
         selectedAgencia={filters.agencia}
-        onProvinciaChange={(value) =>
-          setFilters((prev) => ({ ...prev, provincia: value, city: '' }))
-        }
-        onCityChange={(value) =>
-          setFilters((prev) => ({ ...prev, city: value }))
-        }
-        onMinPriceChange={(value) =>
-          setFilters((prev) => ({ ...prev, minPrice: value }))
-        }
-        onMaxPriceChange={(value) =>
-          setFilters((prev) => ({ ...prev, maxPrice: value }))
-        }
-        onReferenceChange={(value) =>
-          setFilters((prev) => ({ ...prev, reference: value }))
-        }
-        onTipoChange={(value) =>
-          setFilters((prev) => ({ ...prev, tipo: value }))
-        }
-        onAgenciaChange={(value) =>
-          setFilters((prev) => ({ ...prev, agencia: value }))
-        }
+        onProvinciaChange={(value) => {
+          setFilters((prev) => ({ ...prev, provincia: value, city: '' }));
+          setSearchParams({ page: '1' });
+        }}
+        onCityChange={(value) => {
+          setFilters((prev) => ({ ...prev, city: value }));
+          setSearchParams({ page: '1' });
+        }}
+        onMinPriceChange={(value) => {
+          setFilters((prev) => ({ ...prev, minPrice: value }));
+          setSearchParams({ page: '1' });
+        }}
+        onMaxPriceChange={(value) => {
+          setFilters((prev) => ({ ...prev, maxPrice: value }));
+          setSearchParams({ page: '1' });
+        }}
+        onReferenceChange={(value) => {
+          setFilters((prev) => ({ ...prev, reference: value }));
+          setSearchParams({ page: '1' });
+        }}
+        onTipoChange={(value) => {
+          setFilters((prev) => ({ ...prev, tipo: value }));
+          setSearchParams({ page: '1' });
+        }}
+        onAgenciaChange={(value) => {
+          setFilters((prev) => ({ ...prev, agencia: value }));
+          setSearchParams({ page: '1' });
+        }}
       />
       {loading ? (
         // 🔹 Show Skeleton Loader Instead of Blank Screen

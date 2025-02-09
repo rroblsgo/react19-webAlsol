@@ -5,7 +5,8 @@ import PropertyDetail from './components/PropertyDetail';
 import Cards from './components/Cards';
 import ApiRest from './components/ApiRest';
 import { fetchProperties } from './utils/fetchProperties';
-import { Property } from './utils/parseProperties';
+import { fetchPropertiesAlsol } from './utils/fetchPropertiesAlsol';
+import { Property } from './utils/parseProperties_Gica';
 import { FilterProvider } from './context/FilterContext';
 
 function getProvincias(properties: Property[]) {
@@ -47,7 +48,9 @@ const App: React.FC = () => {
     const getProperties = async () => {
       try {
         const fetchedProperties = await fetchProperties();
-        setProperties(fetchedProperties);
+        const fetchedPropertiesAlsol = await fetchPropertiesAlsol();
+
+        setProperties(fetchedProperties.concat(fetchedPropertiesAlsol));
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -56,7 +59,7 @@ const App: React.FC = () => {
     };
     getProperties();
   }, []);
-
+  // console.log(properties);
   if (error) return <div>Error: {error}</div>;
 
   const provincias = getProvincias(properties);
