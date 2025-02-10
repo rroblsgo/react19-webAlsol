@@ -88,7 +88,10 @@ const App: React.FC = () => {
               />
             }
           />
-          <Route path="/property/:id" element={<PropertyDetail />} />
+          <Route
+            path="/property/:id"
+            element={<PropertyDetail properties={properties} />}
+          />
           <Route path="/cards" element={<Cards />} />
           <Route path="/newreq" element={<ApiRest />} />
         </Routes>

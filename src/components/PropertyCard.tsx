@@ -6,13 +6,25 @@ import { priceFormat } from '../utils/priceFormat';
 
 const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
   return (
-    <div className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="relative max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
       <Link to={`/property/${property.id}`} state={{ property }}>
         <img
           className="w-96 h-64 object-cover"
           src={property.image}
           alt={property.title}
         />
+        {property.exclusiva == '1' && (
+          <img
+            src="/exclusive-ficha.png"
+            alt="Exclusiva"
+            className="absolute top-4 right-4 w-12 h-12"
+          />
+        )}
+        {property.reservado === '1' && (
+          <p className="absolute top-70 left-0 bg-red-400 p-1 text-white">
+            RESERVADO
+          </p>
+        )}
         <div className="relative">
           {property.accion != 'Alquilar' ? (
             <div className="absolute top-0 right-0 bg-indigo-400 px-4 py-2 text-white text-sm hover:bg-white hover:text-indigo-600 transition duration-500 ease-in-out">

@@ -1,49 +1,24 @@
 import React from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { parseProperties, Property } from '../utils/parseProperties_Gica';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Property } from '../utils/parseProperties_Gica';
 import ImageCarousel from './ImageCarousel';
 import { newDescription } from '../utils/formatDescription';
 import { priceFormat } from '../utils/priceFormat';
 import PropertyMap from './PropertyMap';
 import { FaCheck } from 'react-icons/fa';
+import EnergyEfficiencyGraph from './EnergyEfficiencyGraph';
 
-const PropertyDetail: React.FC = () => {
+const PropertyDetail: React.FC<{ properties: Property[] }> = ({
+  properties,
+}) => {
   const { id } = useParams<{ id: string }>();
-  const location = useLocation();
   const navigate = useNavigate();
-  const [property, setProperty] = React.useState<Property | null>(
-    location.state?.property || null
-  );
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [property, setProperty] = React.useState<Property | null>(null);
 
   React.useEffect(() => {
-    const fetchProperty = async () => {
-      try {
-        const response = await fetch('/api/properties');
-        if (!response.ok) {
-          throw new Error(`Failed to fetch properties: ${response.status}`);
-        }
-        const xmlText = await response.text();
-        const properties = parseProperties(xmlText);
-        const foundProperty = properties.find((p) => p.id === id) || null;
-        setProperty(foundProperty);
-      } catch (error) {
-        console.error('Error fetching property:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (!property) {
-      fetchProperty();
-    } else {
-      setLoading(false);
-    }
-  }, [id, property]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    const foundProperty = properties.find((p) => p.id === id) || null;
+    setProperty(foundProperty); // ✅ Now setting state inside useEffect
+  }, [id, properties]);
 
   if (!property) {
     return (
@@ -60,13 +35,8 @@ const PropertyDetail: React.FC = () => {
     );
   }
 
-  // console.log(property);
-
-  if (!property) {
-    return <div className="text-center">Loading property details...</div>;
-  }
-  const latitude = parseFloat(property.latitud);
-  const longitud = parseFloat(property.longitud);
+  const latitude = parseFloat(property?.latitud);
+  const longitud = parseFloat(property?.longitud);
   // console.log(latitude, longitude);
 
   return (
@@ -95,58 +65,180 @@ const PropertyDetail: React.FC = () => {
           </div>
         </div>
 
+        {/* Imprimir características */}
         <div className="mt-8">
           <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
             Características
           </h2>
           <div className=" p-8 bg-white border border-gray-200 rounded-lg shadow-2xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              <ul className="list-disc ml-10  text-gray-600">
-                <li>Tipo propiedad: {property.tipo_ofer}</li>
-                <li>Id: {property.id}</li>
-                <li>Ref: {property.ref}</li>
-                <li>Provincia: {property.provincia}</li>
-                <li>Localidad: {property.city}</li>
-                <li>Zona: {property.zona}</li>
-              </ul>
-              <ul className="list-disc ml-10 mt-2 text-gray-600">
-                <li>Conservación: {property.conservacion}</li>
-                <li>Orientación: {property.orientacion}</li>
-                <li>M.Construidos: {property.m_cons} m²</li>
-                <li>M.Útiles: {property.m_uties} m²</li>
-                {property.m_parcela != '0' ? (
-                  <li>M.Parcela: {property.m_parcela} m²</li>
-                ) : null}
-                {property.m_terraza != '0.00' ? (
-                  <li>M.Terraza: {property.m_terraza} m²</li>
-                ) : null}
-                <li>
-                  Rooms: {property.habdobles} dobles, {property.habsimples}{' '}
-                  simples
+            <div className="flex flex-col-2 justify-between">
+              <ul className="list-none ml-10 mt-2 text-gray-600">
+                <li className="char_list">
+                  <p>Id</p>
+                  <p className="font-semibold">{property.id}</p>
                 </li>
-                <li>
-                  Baños: {property.banyos} baños, {property.aseos} aseos
+                <li className="char_list">
+                  <p>Referencia</p>
+                  <p className="font-semibold">{property.ref}</p>
                 </li>
-              </ul>
-              <ul className="list-disc ml-10 mt-2 text-gray-600">
-                <li>Acción: {property.accion}</li>
-                {Number(property.price) > 0 ? (
-                  <li>Precio: {priceFormat(Number(property.price))}</li>
-                ) : null}
-                {Number(property.precio_alquiler) > 0 ? (
-                  <li>
-                    Precio_Alq: {priceFormat(Number(property.precio_alquiler))}{' '}
-                    / mes
+                <li className="char_list">
+                  <p>Tipo propiedad</p>
+                  <p className="font-semibold">{property.tipo_ofer}</p>
+                </li>
+                {property.antiguedad != '' ? (
+                  <li className="char_list">
+                    <p>Antigüedad</p>
+                    <p className="font-semibold">{property.antiguedad}</p>
                   </li>
                 ) : null}
-                <li>Agente: {property.agente}</li>
-                <li>Email_Agente: {property.email_agente}</li>
-                <li>Tlf_Agente: {property.tlf_agente}</li>
+                <li className="char_list">
+                  <p>Provincia</p>
+                  <p className="font-semibold">{property.provincia}</p>
+                </li>
+                <li className="char_list">
+                  <p>Población</p>
+                  <p className="font-semibold">{property.city}</p>
+                </li>
+                <li className="char_list">
+                  <p>Zona</p>
+                  <p className="font-semibold">{property.zona}</p>
+                </li>
+                <li className="char_list">
+                  <p>m² Construidos</p>
+                  <p className="font-semibold">{property.m_cons} m²</p>
+                </li>
+                <li className="char_list">
+                  <p>m² Útiles</p>
+                  <p className="font-semibold">{property.m_uties} m²</p>
+                </li>
+                {property.m_parcela != '0' ? (
+                  <li className="char_list">
+                    <p>m² Parcela</p>
+                    <p className="font-semibold">{property.m_parcela} m²</p>
+                  </li>
+                ) : null}
+                {property.m_terraza != '0' && property.m_terraza != '' ? (
+                  <li className="char_list">
+                    <p>m² Terraza</p>
+                    <p className="font-semibold">{property.m_terraza} m²</p>
+                  </li>
+                ) : null}
+              </ul>
+              <ul className="list-none ml-10 mt-2 text-gray-600">
+                <li className="char_list">
+                  <p>Acción</p>
+                  <p className="font-semibold">
+                    {property.accion.toUpperCase()}
+                  </p>
+                </li>
+                {Number(property.price) > 0 ? (
+                  <li className="char_list">
+                    <p>Precio venta </p>
+                    <p className="font-semibold text-red-500">
+                      {priceFormat(Number(property.price))}
+                    </p>
+                  </li>
+                ) : null}
+                {Number(property.precio_alquiler) > 0 ? (
+                  <li className="char_list">
+                    <p>Precio Alquiler</p>
+                    <p className="font-semibold text-red-500">
+                      {priceFormat(Number(property.precio_alquiler))} / mes
+                    </p>
+                  </li>
+                ) : null}
+                {Number(property.gastos_comunidad) > 0 ? (
+                  <li className="char_list">
+                    <p>Gastos Comunidad</p>
+                    <p className="font-semibold">
+                      {priceFormat(Number(property.gastos_comunidad))} / mes
+                    </p>
+                  </li>
+                ) : null}
+                {Number(property.ibi) > 0 ? (
+                  <li className="char_list">
+                    <p>IBI</p>
+                    <p className="font-semibold">
+                      {priceFormat(Number(property.ibi))}
+                    </p>
+                  </li>
+                ) : null}
+                {Number(property.planta) > 0 ? (
+                  <li className="char_list">
+                    <p>Planta</p>
+                    <p className="font-semibold">{property.planta}</p>
+                  </li>
+                ) : null}
+                {Number(property.numplanta) > 0 ? (
+                  <li className="char_list">
+                    <p>Plantas</p>
+                    <p className="font-semibold">{property.numplanta}</p>
+                  </li>
+                ) : null}
+                <li className="char_list">
+                  <p>Conservación</p>
+                  <p className="font-semibold">{property.conservacion}</p>
+                </li>
+                {property.orientacion != '' ? (
+                  <li className="char_list">
+                    <p>Orientación</p>
+                    <p className="font-semibold">{property.orientacion}</p>
+                  </li>
+                ) : null}
+                {Number(property.plaza_garaje) > 0 ? (
+                  <li className="char_list">
+                    <p>Plaza Garaje</p>
+                    <p className="font-semibold">{property.plaza_garaje}</p>
+                  </li>
+                ) : null}
+                {Number(property.habsimples) > 0 ? (
+                  <li className="char_list">
+                    <p>Dormitorios Simples</p>
+                    <p className="font-semibold">{property.habsimples}</p>
+                  </li>
+                ) : null}
+                {Number(property.habdobles) > 0 ? (
+                  <li className="char_list">
+                    <p>Dormitorios Dobles</p>
+                    <p className="font-semibold">{property.habdobles}</p>
+                  </li>
+                ) : null}
+                {Number(property.banyos) > 0 ? (
+                  <li className="char_list">
+                    <p>Baños</p>
+                    <p className="font-semibold">{property.banyos}</p>
+                  </li>
+                ) : null}
+                {Number(property.aseos) > 0 ? (
+                  <li className="char_list">
+                    <p>Aseos</p>
+                    <p className="font-semibold">{property.aseos}</p>
+                  </li>
+                ) : null}
+                {property.agente.length > 3 ? (
+                  <li className="char_list">
+                    <p>Agente</p>
+                    <p className="font-semibold">{property.agente}</p>
+                  </li>
+                ) : null}
+                {property.email_agente.length > 3 ? (
+                  <li className="char_list">
+                    <p>Email Agente</p>
+                    <p className="font-semibold">{property.email_agente}</p>
+                  </li>
+                ) : null}
+                {property.tlf_agente.length > 3 ? (
+                  <li className="char_list">
+                    <p>Teléfono Agente</p>
+                    <p className="font-semibold">{property.tlf_agente}</p>
+                  </li>
+                ) : null}
               </ul>
             </div>
           </div>
         </div>
 
+        {/* Imprimir extras */}
         <div className="mt-8">
           <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
             Extras
@@ -181,6 +273,7 @@ const PropertyDetail: React.FC = () => {
           </div>
         </div>
 
+        {/* Imprimir contacto */}
         <div className="mt-8">
           <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
             Contacto
@@ -189,18 +282,31 @@ const PropertyDetail: React.FC = () => {
             <form className="mt-4 space-y-4">
               <input
                 type="text"
+                name="nombre"
                 className="w-full px-4 py-2 border rounded-lg"
                 placeholder="Su Nombre"
                 required
               />
-              <input
-                type="email"
-                className="w-full px-4 py-2 border rounded-lg"
-                placeholder="Su Email"
-                required
-              />
+              <div className="flex justify-between">
+                <input
+                  type="email"
+                  name="email"
+                  className="w-[70%] px-4 py-2 border rounded-lg"
+                  placeholder="Su Email"
+                  required
+                />
+                <input
+                  type="text"
+                  name="telefono"
+                  className="w-[30%] px-4 py-2 border rounded-lg"
+                  placeholder="Su Teléfono"
+                  required
+                />
+              </div>
+
               <textarea
                 className="w-full px-4 py-2 border rounded-lg"
+                name="message"
                 placeholder="Su mensaje"
                 rows={4}
                 required
@@ -215,6 +321,8 @@ const PropertyDetail: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Imprimir mapa */}
       <div className="mt-4 max-w-5xl mx-auto mb-10">
         <h2 className="text-2xl font-bold mt-8 mb-2 text-green-800 ml-4 ">
           Mapa de situación
@@ -222,6 +330,19 @@ const PropertyDetail: React.FC = () => {
         <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-2xl">
           <PropertyMap latitud={latitude} longitud={longitud} />
         </div>
+      </div>
+
+      {/* Imprimir EnergyEfficiencyGraph */}
+      <div className="mt-4 max-w-5xl mx-auto mb-10">
+        <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
+          Cuadro Energético
+        </h2>
+        <EnergyEfficiencyGraph
+          energyLetter={property.letra_ener} // Replace with property.energyLetter
+          energyValue={Number(property.ener_valor)} // Replace with property.energyValue
+          emissionsLetter={property.letra_emi} // Replace with property.emissionsLetter
+          emissionsValue={Number(property.emi_valor)} // Replace with property.emissionsValue
+        />
       </div>
     </div>
   );
