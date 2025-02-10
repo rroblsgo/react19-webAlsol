@@ -41,7 +41,7 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
 
   return (
     <div>
-      <div className="max-w-5xl mx-auto p-4">
+      <div className="max-w-2xl md:max-w-5xl mx-auto p-4">
         <h1 className="text-3xl font-bold mt-4 mb-4 text-green-800">
           {property.title}
         </h1>
@@ -70,8 +70,8 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
           <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
             Características
           </h2>
-          <div className=" p-8 bg-white border border-gray-200 rounded-lg shadow-2xl">
-            <div className="flex flex-col-2 justify-between">
+          <div className="p-2 md:p-8 bg-white border border-gray-200 rounded-lg shadow-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 justify-between">
               <ul className="list-none ml-10 mt-2 text-gray-600">
                 <li className="char_list">
                   <p>Id</p>
@@ -243,7 +243,7 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
           <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
             Extras
           </h2>
-          <div className=" p-8 bg-white border border-gray-200 rounded-lg shadow-2xl">
+          <div className="p-2 md:p-8 bg-white border border-gray-200 rounded-lg shadow-2xl">
             {
               <ul className="list-none ml-10 mt-2 text-gray-600">
                 {property.extras
@@ -256,7 +256,7 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
                   .map((extra, index) => (
                     <li
                       key={index}
-                      className="py-2 border border-gray-500 border-b-1 border-r-0 border-t-0 border-l-0 flex justify-between w-[400px]"
+                      className="py-2 border border-gray-500 border-b-1 border-r-0 border-t-0 border-l-0 flex justify-between w-[250px] md:w-[400px]"
                     >
                       <div>{extra.key}</div>
                       {extra.value === 'X' ||
@@ -287,18 +287,18 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
                 placeholder="Su Nombre"
                 required
               />
-              <div className="flex justify-between">
+              <div className="flex flex-col md:flex-row  justify-between">
                 <input
                   type="email"
                   name="email"
-                  className="w-[70%] px-4 py-2 border rounded-lg"
+                  className="w-full md:w-[70%] px-4 py-2 border rounded-lg"
                   placeholder="Su Email"
                   required
                 />
                 <input
                   type="text"
                   name="telefono"
-                  className="w-[30%] px-4 py-2 border rounded-lg"
+                  className="w-full md:w-[30%] px-4 py-2 border rounded-lg"
                   placeholder="Su Teléfono"
                   required
                 />
@@ -334,7 +334,7 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
 
       {/* Imprimir EnergyEfficiencyGraph */}
       <div className="mt-4 max-w-5xl mx-auto mb-10">
-        <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
+        <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800 ml-4">
           Cuadro Energético
         </h2>
         <EnergyEfficiencyGraph

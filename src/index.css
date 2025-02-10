@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .char_list {
-  @apply py-2 border border-gray-500 border-b border-r-0 border-t-0 border-l-0 flex justify-between w-[400px];
+  @apply py-2 border border-gray-500 border-b border-r-0 border-t-0 border-l-0 flex justify-between w-[250px] md:w-[400px];
 }

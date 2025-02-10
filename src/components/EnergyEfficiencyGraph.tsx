@@ -55,15 +55,19 @@ const EnergyEfficiencyGraph: React.FC<EnergyEfficiencyProps> = ({
   return (
     <div className="p-2 border rounded-md shadow-md max-w-5xl mx-auto">
       <div className="flex flex-row mb-1 py-2 justify-between items-center border px-2">
-        <h2 className="text-xl">MUY EFICIENTE</h2>
+        <h2 className="text-sm md:text-xl">MUY EFICIENTE</h2>
         <div className="flex flex-row gap-x-8">
           <div className="">
             <p className="text-sm text-gray-700">Consumo de Energía</p>
-            <p className="text-lg font-bold">{energyValue} kWh/m² año</p>
+            <p className="text-sm md:text-lg font-bold">
+              {energyValue} kWh/m² año
+            </p>
           </div>
           <div className="">
             <p className="text-sm text-gray-700">Emisiones</p>
-            <p className="text-lg font-bold">{emissionsValue} kg CO₂/m² año</p>
+            <p className="text-sm md:text-lg font-bold">
+              {emissionsValue} kg CO₂/m² año
+            </p>
           </div>
         </div>
       </div>
@@ -125,7 +129,7 @@ const EnergyEfficiencyGraph: React.FC<EnergyEfficiencyProps> = ({
       </div>
 
       <div className="flex flex-row mt-1 mb-2 py-4 justify-between items-center border px-2">
-        <h2 className="text-xl">POCO EFICIENTE</h2>
+        <h2 className=" text-sm md:text-xl">POCO EFICIENTE</h2>
       </div>
 
       <p className="text-xs text-gray-500 mt-4">
