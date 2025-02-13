@@ -7,6 +7,9 @@ import { priceFormat } from '../utils/priceFormat';
 import PropertyMap from './PropertyMap';
 import { FaCheck } from 'react-icons/fa';
 import EnergyEfficiencyGraph from './EnergyEfficiencyGraph';
+// import { PDFDownloadLink } from '@react-pdf/renderer';
+// import PropertyPDF from './PropertyPdf';
+import ContactForm from './ContactForm';
 
 const PropertyDetail: React.FC<{ properties: Property[] }> = ({
   properties,
@@ -273,12 +276,20 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
           </div>
         </div>
 
+        {/* Download PDF Button */}
+        {/* <PDFDownloadLink
+          document={<PropertyPDF property={property} />}
+          fileName={`property_${property.id}.pdf`}
+        >
+          {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF')}
+        </PDFDownloadLink> */}
+
         {/* Imprimir contacto */}
         <div className="mt-8">
           <h2 className="text-2xl font-bold mt-4 mb-2 text-green-800">
-            Contacto
+            Formulario de Contacto
           </h2>
-          <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-2xl max-4xl mx-auto">
+          {/* <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-2xl max-4xl mx-auto">
             <form className="mt-4 space-y-4">
               <input
                 type="text"
@@ -318,7 +329,8 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
                 Enviar mensaje
               </button>
             </form>
-          </div>
+          </div> */}
+          <ContactForm property={property} />
         </div>
       </div>
 
