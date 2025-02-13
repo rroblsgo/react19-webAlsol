@@ -24,10 +24,14 @@ export default defineConfig({
           ),
       },
       '/api': {
-        target: 'https://procesos.inmovilla.com',
+        target: 'http://localhost:5000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api/v1'),
       },
+      // '/api': {
+      //   target: 'https://procesos.inmovilla.com',
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/api/, '/api/v1'),
+      // },
     },
   },
 });
