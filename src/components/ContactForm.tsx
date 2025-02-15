@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Property } from '../utils/parseProperties_Gica';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ContactForm: React.FC<{ property: Property }> = ({ property }) => {
   const [formData, setFormData] = useState({
@@ -26,14 +28,28 @@ const ContactForm: React.FC<{ property: Property }> = ({ property }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+      // if (response.ok) {
+      //   alert('Message sent successfully!');
+      // } else {
+      //   alert('Failed to send message.');
+      // }
       if (response.ok) {
-        alert('Message sent successfully!');
+        toast.success('Sus datos han sido enviados. Gracias!', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
       } else {
-        alert('Failed to send message.');
+        toast.error('Failed to send message. Please try again.', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
       }
     } catch (error) {
       console.error('Error sending email:', error);
-      alert('An error occurred.');
+      toast.error('An error occurred. Please try again.', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
 
@@ -99,6 +115,8 @@ const ContactForm: React.FC<{ property: Property }> = ({ property }) => {
       >
         Enviar
       </button>
+      {/* ✅ ToastContainer at the bottom of ContactForm */}
+      <ToastContainer autoClose={3000} />
     </form>
   );
 };

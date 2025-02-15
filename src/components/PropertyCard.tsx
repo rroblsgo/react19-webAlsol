@@ -20,6 +20,13 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
             className="absolute top-4 right-4 w-12 h-12"
           />
         )}
+        {property.exclusiva == '1' && property.numagencia == '7421' && (
+          <img
+            src="/promocion_Gica.png"
+            alt="Promo_Gica"
+            className="absolute top-4 left-4 w-14 h-14"
+          />
+        )}
         {property.reservado === '1' && (
           <p className="absolute top-70 left-0 bg-red-400 p-1 text-white">
             RESERVADO
