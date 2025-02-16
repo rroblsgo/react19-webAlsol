@@ -137,6 +137,7 @@ const EnergyEfficiencyGraph: React.FC<EnergyEfficiencyProps> = ({
         tanto, no somos responsables de la fiabilidad de la información, por
         favor contacte con nosotros para conocer las características exactas.
       </p>
+      <p className="mb-4">. . .</p>
     </div>
   );
 };

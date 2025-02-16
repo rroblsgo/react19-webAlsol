@@ -27,6 +27,11 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
       },
+      '/proxy': {
+        target: 'https://fotos15.apinmo.com/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/proxy/, ''),
+      },
       // '/api': {
       //   target: 'https://procesos.inmovilla.com',
       //   changeOrigin: true,
