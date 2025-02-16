@@ -8,6 +8,7 @@ import {
   Image,
 } from '@react-pdf/renderer';
 import { Property } from '../utils/parseProperties';
+import { priceFormat } from '../utils/priceFormat';
 
 // Define styles
 const styles = StyleSheet.create({
@@ -23,6 +24,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: '20px',
   },
+  price: {
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'right',
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  ref: {
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 14,
+  },
   // logo: { fontSize: '24px' },
   logo: { width: 137, height: 82 },
   textBold: { fontFamily: 'Helvetica-Bold' },
@@ -37,6 +49,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   text: { marginBottom: 5 },
   pageNumber: {
@@ -84,9 +97,21 @@ const PropertyPDF: React.FC<{
           </View>
         </View>
 
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Text style={styles.ref}>Referencia: {property.ref}</Text>
+          <Text style={styles.price}>
+            {priceFormat(Number(property.price))}
+          </Text>
+        </View>
+
         <View style={styles.title}>
           <Text>{property.title}</Text>
-          <Text>{property.price} €</Text>
         </View>
 
         <View>
