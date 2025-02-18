@@ -40,7 +40,7 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
       setTimeout(() => {
         toPng(componentRef.current as HTMLElement)
           .then((dataUrl) => {
-            console.log('Captured Image Data:', dataUrl);
+            // console.log('Captured Image Data:', dataUrl);
             setImageData(dataUrl);
           })
           .catch((err) => console.error('Error capturing image:', err));
@@ -55,7 +55,7 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
       setTimeout(() => {
         toPng(componentRef2.current as HTMLElement)
           .then((dataUrl) => {
-            console.log('Captured Image Data:', dataUrl);
+            // console.log('Captured Image Data:', dataUrl);
             setImageData2(dataUrl);
           })
           .catch((err) => console.error('Error capturing image:', err));
@@ -358,7 +358,7 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
 
       {/* Download PDF Button */}
       <div className="max-w-2xl md:max-w-2xl mx-auto px-4 flex flex-col items-center">
-        <div className="mt-6 flex justify-center w-[90%] md:w-[110%]  px-2 py-2 bg-blue-500 text-white rounded-md border border-blue-500">
+        <div className="hidden  mt-6 md:flex justify-center w-[90%] md:w-[110%]  px-2 py-2 bg-blue-500 text-white rounded-md border border-blue-500">
           <PDFDownloadLink
             document={
               <PropertyPDF
@@ -375,21 +375,23 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
         {/* Toggle Button */}
         <button
           onClick={togglePdfViewer}
-          className="w-[90%] md:w-[110%] mt-2 mb-2  px-2 py-2 bg-blue-500 text-white rounded-md border border-blue-500"
+          className="hidden md:block md:w-[110%] mt-2 mb-2  px-2 py-2 bg-blue-500 text-white rounded-md border border-blue-500"
         >
           {showPdf ? 'Ocultar PDF' : 'Ver PDF'}
         </button>
 
         {/* Conditionally Render PDF Viewer */}
-        {showPdf && (
-          <PDFViewer width="110%" height="800">
-            <PropertyPDF
-              property={property}
-              imageData={imageData}
-              imageData2={imageData2}
-            />
-          </PDFViewer>
-        )}
+        <div className="">
+          {showPdf && (
+            <PDFViewer width="700px" height="800">
+              <PropertyPDF
+                property={property}
+                imageData={imageData}
+                imageData2={imageData2}
+              />
+            </PDFViewer>
+          )}
+        </div>
       </div>
     </div>
   );

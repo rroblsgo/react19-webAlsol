@@ -105,9 +105,16 @@ const PropertyPDF: React.FC<{
           }}
         >
           <Text style={styles.ref}>Referencia: {property.ref}</Text>
-          <Text style={styles.price}>
-            {priceFormat(Number(property.price))}
-          </Text>
+          {Number(property.precio_alquiler) > 0 && (
+            <Text style={styles.price}>
+              {priceFormat(Number(property.precio_alquiler))} / mes
+            </Text>
+          )}
+          {Number(property.price) != 0 && (
+            <Text style={styles.price}>
+              {priceFormat(Number(property.price))}
+            </Text>
+          )}
         </View>
 
         <View style={styles.title}>

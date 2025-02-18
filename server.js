@@ -1,3 +1,4 @@
+import axios from 'axios';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -17,33 +18,52 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/api/send-email', async (req, res) => {
-  const { name, email, phone, message, id, ref, sentAt } = req.body;
-  // console.log(name, email, phone, message, id, ref, sentAt);
+  const { name, email, phone, message, id, ref, sentAt, recaptchaToken } =
+    req.body;
+  // console.log(name, email, phone, message, id, ref, sentAt, recaptchaToken);
+
+  // 1️⃣ Verify reCAPTCHA with Google
+  try {
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`;
+    const { data } = await axios.post(verifyUrl);
+    // console.log(data);
+
+    if (!data.success) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'reCAPTCHA failed' });
+    }
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error);
+    return res
+      .status(500)
+      .json({ success: false, message: 'reCAPTCHA verification failed' });
+  }
 
   // HTML Email Template
   const emailHtml = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-      <h2 style="color: #0056b3;">New Contact Form Submission</h2>
-      <p><strong>Date & Time:</strong> ${sentAt}</p>
+      <h2 style="color: #0056b3;">Recibido Formulario de Contacto</h2>
+      <p><strong>Fecha & Hora:</strong> ${sentAt}</p>
       <p><strong>Id:</strong>${id}</p>
       <p><strong>Referencia:</strong>${ref}</p>
-      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Nombre:</strong> ${name}</p>
       <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-      <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-      <p><strong>Message:</strong></p>
+      <p><strong>Teléfono:</strong> ${phone || 'Not provided'}</p>
+      <p><strong>Mensaje:</strong></p>
       <blockquote style="background: #f8f9fa; padding: 10px; border-left: 5px solid #0056b3;">
         ${message}
       </blockquote>
       <hr />
-      <p style="font-size: 12px; color: gray;">This email was sent automatically from your website's contact form.</p>
+      <p style="font-size: 12px; color: gray;">Este email ha sido enviado automáticamente desde el formulario de contacto en tu web.</p>
     </div>
   `;
 
   try {
     await transporter.sendMail({
-      from: `"Website Contact" <${process.env.EMAIL_USER}>`,
+      from: `"Website Contact Form" <${process.env.EMAIL_USER}>`,
       to: 'rroblesgo@gmail.com',
-      subject: `📩 New Contact from ${name} - Property reference ${ref}`,
+      subject: `📩 Nuevo Contacto de: ${name}, para Referencia: ${ref}`,
       html: emailHtml, // HTML content
     });
 

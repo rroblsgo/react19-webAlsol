@@ -45,7 +45,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       {/* Left Arrow */}
       <button
         onClick={goToPrevious}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-4 rounded-full hover:bg-opacity-75"
         aria-label="Previous image"
       >
         ❮
@@ -54,7 +54,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       {/* Right Arrow */}
       <button
         onClick={goToNext}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-4 rounded-full hover:bg-opacity-75"
         aria-label="Next image"
       >
         ❯

@@ -5,6 +5,28 @@ import { FaBed, FaBath, FaHome } from 'react-icons/fa';
 import { priceFormat } from '../utils/priceFormat';
 
 const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
+  // console.log(property.extras[24].key, property.extras[24].value);
+  let hasTour: boolean = false;
+  for (let i = 0; i <= property.extras.length - 1; i++) {
+    if (
+      property.extras[i].key === 'Tour Virtual' &&
+      property.extras[i].value === '1'
+    ) {
+      hasTour = true;
+      break;
+    }
+  }
+  // console.log(hasTour);
+
+  let sufijo = '';
+  if (property.ref.includes('/')) {
+    sufijo =
+      property.id.slice(0, property.id.length - 4) + '.' + property.numagencia;
+  } else {
+    sufijo = property.id + '.' + property.numagencia;
+  }
+  // console.log(sufijo);
+  // console.log(property.extras.length, property.extras);
   return (
     <div className="relative max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
       <Link to={`/property/${property.id}`} state={{ property }}>
@@ -19,6 +41,18 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
             alt="Exclusiva"
             className="absolute top-4 right-4 w-12 h-12"
           />
+        )}
+        {hasTour && (
+          <Link
+            to={`http://ap.apinmo.com/fotosvr/tour.php?cod=${sufijo}`}
+            target="blank"
+          >
+            <img
+              src="/360-ficha.png"
+              alt="Tour virtual"
+              className="absolute top-16 right-4 w-12 h-12"
+            />
+          </Link>
         )}
         {property.exclusiva == '1' && property.numagencia == '7421' && (
           <img

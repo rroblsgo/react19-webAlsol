@@ -243,5 +243,6 @@ export const parseProperties = (xml: string): Property[] => {
     accion: getAccion(node),
     extras: getExtras(node),
   }));
+
   return data;
 };

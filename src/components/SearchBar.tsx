@@ -29,7 +29,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   ciudadesPorProvincia,
   selectedProvincia,
   selectedCity,
-  city,
   minPrice,
   maxPrice,
   reference,
@@ -45,7 +44,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onTipoChange,
   onAgenciaChange,
 }) => {
-  console.log(city); // TODO remove
   return (
     // <div className="h-custom-search flex items-center justify-center">
     <div
