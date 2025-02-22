@@ -4,11 +4,13 @@ const fetchAPI = async () => {
   // await delayMilisec(1000);
   try {
     // const BASE_URL = 'https://procesos.inmovilla.com/api/v1';
-    const BASE_URL = '/api';
-    const TOKEN = import.meta.env.VITE_TOKEN as string;
+    const BASE_URL = '/api2';
+    // const TOKEN: string = '285614D5D34FC0B8F513A385895698F0';
+    const TOKEN = import.meta.env.VITE_TOKEN2 as string;
+    console.log(import.meta.env);
     console.log(TOKEN);
 
-    const response = await fetch(`${BASE_URL}/propiedades/?cod_ofer=23668105`, {
+    const response = await fetch(`${BASE_URL}/propiedades/?cod_ofer=18972487`, {
       method: 'GET',
       headers: {
         Token: `${TOKEN}`,

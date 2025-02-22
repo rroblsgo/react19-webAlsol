@@ -8,9 +8,10 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
   // console.log(property.extras[24].key, property.extras[24].value);
   let hasTour: boolean = false;
   for (let i = 0; i <= property.extras.length - 1; i++) {
+    // console.log(property.extras[i].key, property.extras[i].value);
     if (
       property.extras[i].key === 'Tour Virtual' &&
-      property.extras[i].value === '1'
+      (property.extras[i].value === '1' || property.extras[i].value.length > 2)
     ) {
       hasTour = true;
       break;
@@ -61,7 +62,7 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
             className="absolute top-4 left-4 w-14 h-14"
           />
         )}
-        {property.reservado === '1' && (
+        {property.estadoficha === '7' && (
           <p className="absolute top-70 left-0 bg-red-400 p-1 text-white">
             RESERVADO
           </p>

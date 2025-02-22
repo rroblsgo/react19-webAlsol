@@ -53,7 +53,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <div className="p-4 border border-amber-500 rounded-md shadow-md  max-w-6xl mx-auto">
         <img src="/cropped-Logotipo-RE-Claim.png" alt="" />
         <span className="text-xl font-light mb-4 flex flex-row justify-between">
-          <p>Seleccionar Propiedades</p>
+          <p>Seleccionar Criterios de Búsqueda</p>
           {totalProps > 0 ? (
             <p className="font-semibold">Total {totalProps}</p>
           ) : (
@@ -84,14 +84,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </div>
           {/* City Dropdown (Filtered by Provincia) */}
           <div className="mb-4">
-            <label className="block font-medium mb-1">Ciudad</label>
+            <label className="block font-medium mb-1">Población</label>
             <select
               value={selectedCity}
               onChange={(e) => onCityChange(e.target.value)}
               className="border rounded-md p-2 w-full"
               disabled={!selectedProvincia}
             >
-              <option value="">Seleccione Ciudad</option>
+              <option value="">Seleccione Población</option>
               {selectedProvincia &&
                 ciudadesPorProvincia[selectedProvincia]?.map((city) => (
                   <option key={city} value={city}>
@@ -127,7 +127,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           {/* Price Range */}
           <div className="mb-4">
             <label className="block font-medium mb-1">
-              Rango de precios de venta
+              Rango Precios de Venta
             </label>
             <div className="flex space-x-4">
               <input
@@ -148,7 +148,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </div>
           {/* Tipo Dropdown */}
           <div className="mb-4">
-            <label className="block font-medium mb-1">Tipo</label>
+            <label className="block font-medium mb-1">Tipo Propiedad</label>
             <select
               value={selectedTipo}
               onChange={(e) => onTipoChange(e.target.value)}
@@ -179,8 +179,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
             </select>
           </div>
           {totalProps === 0 && (
-            <p className="text-red-500 font-semibold">
-              Revise los criterios de selección
+            <p className="text-red-500 font-semibold mb-4">
+              Revisando los criterios de selección / Buscando
             </p>
           )}
         </div>

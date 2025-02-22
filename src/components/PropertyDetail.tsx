@@ -11,6 +11,8 @@ import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import PropertyPDF from './PropertyPdf';
 import ContactForm from './ContactForm';
 import { toPng } from 'html-to-image';
+import { transformExtras } from '../utils/extrasConvert';
+import info from '../utils/info_keys.json';
 
 const PropertyDetail: React.FC<{ properties: Property[] }> = ({
   properties,
@@ -30,7 +32,12 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
 
   React.useEffect(() => {
     const foundProperty = properties.find((p) => p.id === id) || null;
-    setProperty(foundProperty); // ✅ Now setting state inside useEffect
+    if (foundProperty) {
+      // Transform extras before setting state
+      const transformedExtras = transformExtras(foundProperty.extras, info);
+      setProperty({ ...foundProperty, extras: transformedExtras });
+    }
+    // console.log('Property:', property);
   }, [id, properties]);
 
   // Capture image only when property is loaded
@@ -80,6 +87,38 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
 
   const latitude = parseFloat(property?.latitud);
   const longitud = parseFloat(property?.longitud);
+  // console.log('extras:', property.extras);
+
+  const extras = [];
+  let extras1: { key: string; value: string }[] = [];
+  let extras2: { key: string; value: string }[] = [];
+  // console.log('extras:', property.extras);
+  if (property.extras.length > 0) {
+    for (let i = 0; i < property.extras.length; i++) {
+      if (
+        property.extras[i].value !== '_' &&
+        property.extras[i].value !== '0' &&
+        property.extras[i].value !== ' '
+      ) {
+        extras.push(property.extras[i]);
+      }
+    }
+    extras1 = extras.slice(0, Math.ceil(extras.length / 2));
+    extras2 = extras.slice(Math.ceil(extras.length / 2));
+    console.log('extras:', extras);
+    console.log('extras1:', extras1);
+    console.log('extras2:', extras2);
+  }
+  console.log('entorno', property.entorno);
+  let has_entorno = false;
+  if (property.entorno.length > 0) {
+    for (let i = 0; i < property.entorno.length; i++) {
+      if (property.entorno[i].value === '1') {
+        has_entorno = true;
+        break;
+      }
+    }
+  }
 
   return (
     <div>
@@ -87,6 +126,11 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
         <h1 className="text-3xl font-bold mt-4 mb-4 text-green-800">
           {property.title}
         </h1>
+        {property.estadoficha === '7' && (
+          <p className=" bg-red-400 p-4 text-white text-center text-2xl font-bold mb-2 ">
+            RESERVADO
+          </p>
+        )}
         <ImageCarousel images={property.images} />
         <h1 className="text-2xl font-bold mt-4 mb-2 text-green-800">
           {property.title}
@@ -289,31 +333,100 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
             </h2>
             <div className="p-2 md:p-8 bg-white border border-gray-200 rounded-lg shadow-2xl">
               {
+                <div className="grid grid-cols-1 md:grid-cols-2 justify-between">
+                  <ul className="list-none ml-10 mt-2 text-gray-600">
+                    {extras1
+                      .filter(
+                        (extra) =>
+                          extra.value !== '_' &&
+                          extra.value !== '0' &&
+                          extra.value !== ' '
+                      )
+                      .map((extra, index) => (
+                        <li
+                          key={index}
+                          className="py-2 border border-gray-500 border-b-1 border-r-0 border-t-0 border-l-0 flex justify-between w-[250px] md:w-[400px]"
+                        >
+                          <div>{extra.key}</div>
+                          {extra.key === 'Parking' && Number(extra.value) > 0
+                            ? extra.value + ' plazas'
+                            : null}
+                          {extra.key === 'Distancia al mar' &&
+                          Number(extra.value) > 0
+                            ? extra.value + ' m'
+                            : null}
+                          {extra.value === 'X' ||
+                          extra.value === '1' ||
+                          Number(extra.value) > 1 ? (
+                            <FaCheck />
+                          ) : (
+                            <div>{extra.value}</div>
+                          )}
+                        </li>
+                      ))}
+                  </ul>
+                  <ul className="list-none ml-10 mt-2 text-gray-600">
+                    {extras2
+                      .filter(
+                        (extra) =>
+                          extra.value !== '_' &&
+                          extra.value !== '0' &&
+                          extra.value !== ' '
+                      )
+                      .map((extra, index) => (
+                        <li
+                          key={index}
+                          className="py-2 border border-gray-500 border-b-1 border-r-0 border-t-0 border-l-0 flex justify-between w-[250px] md:w-[400px]"
+                        >
+                          <div>{extra.key}</div>
+                          {extra.key === 'Parking' && Number(extra.value) > 0
+                            ? extra.value + ' plazas'
+                            : null}
+                          {extra.key === 'Distancia al mar' &&
+                          Number(extra.value) > 0
+                            ? extra.value + ' m'
+                            : null}
+                          {extra.value === 'X' ||
+                          extra.value === '1' ||
+                          Number(extra.value) > 1 ? (
+                            <FaCheck />
+                          ) : (
+                            <div>{extra.value}</div>
+                          )}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              }
+              {property.entorno.length > 0 && has_entorno && (
                 <ul className="list-none ml-10 mt-2 text-gray-600">
-                  {property.extras
+                  <p className="text-xl py-2 border border-gray-500 border-b-1 border-r-0 border-t-0 border-l-0 w-[250px] md:w-[400px]">
+                    Entorno
+                  </p>
+                  {property.entorno
                     .filter(
-                      (extra) =>
-                        extra.value !== '_' &&
-                        extra.value !== '0' &&
-                        extra.value !== ' '
+                      (item) =>
+                        item.value !== '_' &&
+                        item.value !== '0' &&
+                        item.value !== ' '
                     )
-                    .map((extra, index) => (
+                    .map((item, index) => (
                       <li
                         key={index}
                         className="py-2 border border-gray-500 border-b-1 border-r-0 border-t-0 border-l-0 flex justify-between w-[250px] md:w-[400px]"
                       >
-                        <div>{extra.key}</div>
-                        {extra.value === 'X' ||
-                        extra.value === '1' ||
-                        Number(extra.value) > 1 ? (
+                        <div>{item.key}</div>
+                        {item.value === 'X' ||
+                        item.value === '1' ||
+                        Number(item.value) > 1 ? (
                           <FaCheck />
                         ) : (
-                          <div>{extra.value}</div>
+                          <div>{item.value}</div>
                         )}
                       </li>
                     ))}
                 </ul>
-              }
+              )}
             </div>
           </div>
         </div>

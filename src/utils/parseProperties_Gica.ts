@@ -51,6 +51,7 @@ export interface Property {
   ener_valor: string;
   emi_valor: string;
   extras: { key: string; value: string }[];
+  entorno: { key: string; value: string }[];
 }
 
 function getAccion(node: Element) {
@@ -121,6 +122,8 @@ function getExtras(node: Element) {
     'Cocina Equipada',
     'Altura',
     'Tour Virtual',
+    'Electricidad',
+    'Garaje',
   ];
   const extras_base = [
     'luminoso',
@@ -148,6 +151,8 @@ function getExtras(node: Element) {
     'cocina_equipada',
     'altura',
     'tourvirtual',
+    'keyelectricidad',
+    'garaje',
   ];
   const extras: { key: string; value: string }[] = [];
   // const numFotos = node.getElementsByTagName('numfotos')[0].textContent || '5';
@@ -158,9 +163,56 @@ function getExtras(node: Element) {
         key: extras_keys[i],
         value: node.getElementsByTagName(extras_base[i])[0].textContent || ' ',
       });
-    } else break;
+    }
   }
   return extras; //
+}
+
+function getEntorno(node: Element) {
+  const entorno_keys = [
+    'Rural',
+    'Arboleda',
+    'Montaña',
+    'Costa',
+    'Mirador',
+    'Vallado',
+    'Golf',
+    'Zonas Infantiles',
+    'Centros Comerciales',
+    'Colegios',
+    'Hospitales',
+    'Autobuses',
+    'Tren',
+    'Metro',
+  ];
+  const entorno_base = [
+    'rural',
+    'arboles',
+    'montana',
+    'costa',
+    'mirador',
+    'vallado',
+    'golf',
+    'zonas_infantiles',
+    'centros_comerciales',
+    'colegios',
+    'hospitales',
+    'autobuses',
+    'tren',
+    'metro',
+  ];
+
+  const entorno: { key: string; value: string }[] = [];
+
+  for (let i = 0; i <= entorno_keys.length - 1; i++) {
+    if (node.getElementsByTagName(entorno_base[i])[0]) {
+      entorno.push({
+        key: entorno_keys[i],
+        value: node.getElementsByTagName(entorno_base[i])[0].textContent || ' ',
+      });
+    }
+  }
+  return entorno;
 }
 
 export const parseProperties = (xml: string): Property[] => {
@@ -242,6 +294,7 @@ export const parseProperties = (xml: string): Property[] => {
     images: getImages(node),
     accion: getAccion(node),
     extras: getExtras(node),
+    entorno: getEntorno(node),
   }));
 
   return data;

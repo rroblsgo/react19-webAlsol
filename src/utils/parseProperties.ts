@@ -51,6 +51,7 @@ export interface Property {
   ener_valor: string;
   emi_valor: string;
   extras: { key: string; value: string }[];
+  entorno: { key: string; value: string }[];
 }
 
 function getAccion(node: Element) {
@@ -114,13 +115,36 @@ function getExtras(node: Element) {
     'Armarios Empotrados',
     'Carpinteria Interior',
     'Carpinteria Exterior',
-    'Piscina',
+    'Piscina Comunitaria',
     'Tipo Cocina',
     'Primera línea',
     'Tipo suelo',
     'Cocina Equipada',
     'Altura',
     'Tour Virtual',
+    'Electricidad',
+    'Suelo',
+    'Fachada',
+    'Techo',
+    'Electrodomésticos_',
+    'Vistas',
+    'Agua_Caliente',
+    'Calefacción_Tipo',
+    'Cocina',
+    'Tipo_Exterior',
+    'Piscina Privada',
+    'Distancia al mar',
+    'Aire Centralizado',
+    'Bomba Frio-Calor',
+    'Buhardilla',
+    'Sótano',
+    'Patio',
+    'Chimenea',
+    'Despensa',
+    'Barbacoa',
+    'Garaje Doble',
+    'Terraza Acristalada',
+    'Parking',
   ];
   const extras_base = [
     'luminoso',
@@ -132,12 +156,12 @@ function getExtras(node: Element) {
     'balcon',
     'jardin',
     'calefaccion',
-    'electro',
+    'electros',
     'gasciudad',
     'muebles',
     'puerta_blin',
     'terraza',
-    'vistasalmar',
+    'vistasalmar_',
     'arma_empo',
     'carpint',
     'carpext',
@@ -148,9 +172,31 @@ function getExtras(node: Element) {
     'cocina_equipada',
     'altura',
     'tour',
+    'keyelectricidad',
+    'keysuelo',
+    'keyfachada',
+    'keytecho',
+    'electro',
+    'keyvista',
+    'keyagua',
+    'keycalefa',
+    'cocina_inde',
+    'todoext',
+    'piscina_prop',
+    'distmar',
+    'airecentral',
+    'bombafriocalor',
+    'buhardilla',
+    'sotano',
+    'patio',
+    'chimenea',
+    'despensa',
+    'barbacoa',
+    'garajedoble',
+    'terrazaacris',
+    'parking',
   ];
   const extras: { key: string; value: string }[] = [];
-  // const numFotos = node.getElementsByTagName('numfotos')[0].textContent || '5';
 
   for (let i = 0; i <= extras_keys.length - 1; i++) {
     if (node.getElementsByTagName(extras_base[i])[0]) {
@@ -158,9 +204,57 @@ function getExtras(node: Element) {
         key: extras_keys[i],
         value: node.getElementsByTagName(extras_base[i])[0].textContent || ' ',
       });
-    } else break;
+    }
   }
-  return extras; //
+  return extras;
+}
+
+function getEntorno(node: Element) {
+  const entorno_keys = [
+    'Rural',
+    'Arboleda',
+    'Montaña',
+    'Costa',
+    'Mirador',
+    'Vallado',
+    'Golf',
+    'Zonas Infantiles',
+    'Centros Comerciales',
+    'Colegios',
+    'Hospitales',
+    'Autobuses',
+    'Tren',
+    'Metro',
+  ];
+  const entorno_base = [
+    'rural',
+    'arboles',
+    'montana',
+    'costa',
+    'mirador',
+    'vallado',
+    'golf',
+    'zonas_infantiles',
+    'centros_comerciales',
+    'colegios',
+    'hospitales',
+    'autobuses',
+    'tren',
+    'metro',
+  ];
+
+  const entorno: { key: string; value: string }[] = [];
+
+  for (let i = 0; i <= entorno_keys.length - 1; i++) {
+    if (node.getElementsByTagName(entorno_base[i])[0]) {
+      entorno.push({
+        key: entorno_keys[i],
+        value: node.getElementsByTagName(entorno_base[i])[0].textContent || ' ',
+      });
+    }
+  }
+
+  return entorno;
 }
 
 export const parsePropertiesAlsol = (xml: string): Property[] => {
@@ -242,6 +336,7 @@ export const parsePropertiesAlsol = (xml: string): Property[] => {
     images: getImages(node),
     accion: getAccion(node),
     extras: getExtras(node),
+    entorno: getEntorno(node),
   }));
 
   return data;
