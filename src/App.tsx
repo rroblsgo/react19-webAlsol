@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PropertiesList from './components/PropertiesList';
 import PropertyDetail from './components/PropertyDetail';
@@ -25,7 +25,6 @@ function getCiudadesPorProvincia(properties: Property[]) {
       ciudadesPorProvincia[property.provincia].push(property.city);
     }
   });
-
   return ciudadesPorProvincia;
 }
 
@@ -43,23 +42,40 @@ const App: React.FC = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isFetched = useRef(false); // ✅ Prevents double fetching
 
+  // Fetch the first set of properties immediately
   useEffect(() => {
-    const getProperties = async () => {
+    const getPropertiesAlsol = async () => {
       try {
-        const fetchedProperties = await fetchProperties();
         const fetchedPropertiesAlsol = await fetchPropertiesAlsol();
-
-        setProperties(fetchedProperties.concat(fetchedPropertiesAlsol));
+        setProperties(fetchedPropertiesAlsol);
       } catch (err) {
         setError((err as Error).message);
       } finally {
         setLoading(false);
       }
     };
-    getProperties();
+    getPropertiesAlsol();
   }, []);
+
+  // Fetch the second set in the background
+  useEffect(() => {
+    const getPropertiesGica = async () => {
+      if (isFetched.current) return; // ✅ Prevent double fetch
+      isFetched.current = true;
+      try {
+        const fetchedPropertiesGica = await fetchProperties();
+        setProperties((prev) => [...prev, ...fetchedPropertiesGica]); // ✅ Merge properties
+      } catch (err) {
+        setError((err as Error).message);
+      }
+    };
+    getPropertiesGica();
+  }, []);
+  // console.log('Properties count:', properties.length);
   // console.log(properties);
+
   if (error) return <div>Error: {error}</div>;
 
   const provincias = getProvincias(properties);
@@ -69,7 +85,6 @@ const App: React.FC = () => {
   const tipos = getTipos(properties).sort();
   // console.log(tipos);
   const agencias = getAgencias(properties).sort();
-  // console.log(agencias);
 
   return (
     <FilterProvider>

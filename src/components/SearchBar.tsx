@@ -34,15 +34,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   reference,
   tipos,
   selectedTipo,
-  agencias,
-  selectedAgencia,
+  // agencias,
+  // selectedAgencia,
   onProvinciaChange,
   onCityChange,
   onMinPriceChange,
   onMaxPriceChange,
   onReferenceChange,
   onTipoChange,
-  onAgenciaChange,
+  // onAgenciaChange,
 }) => {
   return (
     // <div className="h-custom-search flex items-center justify-center">
@@ -163,7 +163,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             </select>
           </div>
           {/* Agencia Dropdown */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block font-medium mb-1">Agencia</label>
             <select
               value={selectedAgencia}
@@ -177,11 +177,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
           {totalProps === 0 && (
-            <p className="text-red-500 font-semibold mb-4">
-              Revisando los criterios de selección / Buscando
-            </p>
+            <div className="mb-4 mt-4">
+              <p className="text-red-500 font-semibold mb-4">
+                Revisando los criterios de selección / Buscando
+              </p>
+            </div>
           )}
         </div>
       </div>

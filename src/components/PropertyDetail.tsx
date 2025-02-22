@@ -105,11 +105,11 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
     }
     extras1 = extras.slice(0, Math.ceil(extras.length / 2));
     extras2 = extras.slice(Math.ceil(extras.length / 2));
-    console.log('extras:', extras);
-    console.log('extras1:', extras1);
-    console.log('extras2:', extras2);
+    // console.log('extras:', extras);
+    // console.log('extras1:', extras1);
+    // console.log('extras2:', extras2);
   }
-  console.log('entorno', property.entorno);
+  // console.log('entorno', property.entorno);
   let has_entorno = false;
   if (property.entorno.length > 0) {
     for (let i = 0; i < property.entorno.length; i++) {
