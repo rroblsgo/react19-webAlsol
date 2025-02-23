@@ -149,17 +149,17 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
   return (
     <div>
       <div className="max-w-2xl md:max-w-5xl mx-auto p-4">
-        <div className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4">
+        <div className="sticky top-0 z-10 flex flex-col h-24 md:h-16 items-center justify-between border-b bg-white px-4 md:flex-row">
           <button
             onClick={handleBack}
-            className="flex items-center font-medium text-blue-600"
+            className="flex items-center font-medium text-blue-600 text-lg"
           >
-            <ChevronLeft className="mr-1 h-5 w-5" />
+            <ChevronLeft className="mr-1 h-4 w-5" />
             Volver a la lista
           </button>
 
           <div className="flex items-center">
-            <h1 className="font-raleway text-2xl font-bold mt-4 mb-4 text-green-800">
+            <h1 className="font-raleway text-lg md:text-xl font-bold mb-4 text-green-800">
               {property.title}
             </h1>
           </div>

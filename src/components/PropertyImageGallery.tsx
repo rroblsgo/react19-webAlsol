@@ -77,18 +77,17 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
   const PreviewGallery = () => (
     <div className="relative overflow-hidden rounded-lg">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2 aspect-[16/9]">
-        {/* <div className="grid grid-cols-2 gap-2 md:grid-cols-4"> */}
+        {/* <div className="grid grid-cols-2  gap-2 "> */}
         {/* Main large image */}
         <div
           className="relative md:col-span-2 md:row-span-2 cursor-pointer aspect-square md:aspect-auto"
-          // className="relative col-span-2 row-span-2 cursor-pointer"
+          // className="relative md:col-span-2 cursor-pointer  aspect-[4/3]"
           onClick={() => openLightbox(0)}
         >
           <img
             src={images[0].url}
             alt={images[0].tag}
             className="absolute inset-0 h-full w-full object-cover"
-            // className="h-full w-full object-cover"
           />
         </div>
 
@@ -97,14 +96,13 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
           <div
             key={image.url}
             className="relative cursor-pointer overflow-hidden aspect-square md:aspect-auto"
-            // className="relative h-48 cursor-pointer overflow-hidden"
+            // className="relative cursor-pointer overflow-hidden aspect-square"
             onClick={() => openLightbox(index + 1)}
           >
             <img
               src={image.url}
               alt={image.tag}
-              className="absolute inset-0 h-full w-full object-cover transition duration-300 hover:scale-105"
-              // className="h-full w-full object-cover transition duration-300 hover:scale-105"
+              className="hidden md:block absolute inset-0 h-full w-full object-cover transition duration-300 hover:scale-105"
             />
           </div>
         ))}
@@ -115,7 +113,6 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
         <button
           onClick={handleShowAllPhotos}
           className="absolute bottom-4 right-4 rounded-md bg-white px-4 py-2 font-medium text-gray-900 shadow-md transition hover:bg-gray-100"
-          // className="absolute bottom-4 right-4 rounded-md bg-white px-4 py-2 font-medium text-gray-900 shadow-md transition hover:bg-gray-100"
         >
           Ver las {images.length} fotos
         </button>
@@ -127,10 +124,10 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
   const FullGallery = () => (
     <div className="fixed inset-0 z-50 flex flex-col bg-white">
       {/* Fixed header */}
-      <div className="sticky top-0 z-10 flex h-16 items-center justify-evenly border-b bg-white px-4">
+      <div className="sticky top-0 z-10 flex flex-col md:flex-row h-24 md:h-20 mt-4 md:mt-2  items-center justify-evenly border-b bg-white px-4">
         <button
           onClick={handleCloseGallery}
-          className="flex items-center font-medium text-blue-600"
+          className="flex items-center font-medium text-blue-600 text-lg"
         >
           <ChevronLeft className="mr-1 h-5 w-5" />
           Volver a Detalle
@@ -138,7 +135,7 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
 
         <div className="flex items-center">
           {/* <h1 className="mr-4 font-semibold">{propertyTitle}</h1> */}
-          <h1 className="font-raleway text-2xl font-bold mt-4 mb-4 text-green-800">
+          <h1 className="font-raleway text-lg md:text-xl  font-bold mt-4 mb-4 text-green-800">
             {propertyTitle}
           </h1>
           {/* <button className="mr-4 rounded-full border p-2">Save</button>
