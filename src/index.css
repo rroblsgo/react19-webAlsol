@@ -1,7 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .char_list {
   @apply py-2 border border-gray-500 border-b border-r-0 border-t-0 border-l-0 flex justify-between w-[250px] md:w-[400px];
+}
+@layer base {
+  html {
+    font-family: Raleway, system-ui, sans-serif;
+  }
 }

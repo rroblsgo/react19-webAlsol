@@ -8,6 +8,7 @@ import { fetchProperties } from './utils/fetchProperties';
 import { fetchPropertiesAlsol } from './utils/fetchPropertiesAlsol';
 import { Property } from './utils/parseProperties_Gica';
 import { FilterProvider } from './context/FilterContext';
+// import DisplayImages from './components/DisplayImages';
 
 function getProvincias(properties: Property[]) {
   const provincias = properties.map((property) => property.provincia);
@@ -108,6 +109,10 @@ const App: React.FC = () => {
             element={<PropertyDetail properties={properties} />}
           />
           <Route path="/cards" element={<Cards />} />
+          {/* <Route
+            path="/property/images/:id"
+            element={<DisplayImages properties={properties} />}
+          /> */}
           <Route path="/newreq" element={<ApiRest />} />
         </Routes>
       </Router>

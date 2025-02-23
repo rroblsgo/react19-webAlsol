@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Property } from '../utils/parseProperties_Gica';
-import ImageCarousel from './ImageCarousel';
+// import ImageCarousel from './ImageCarousel';
 import { newDescription } from '../utils/formatDescription';
 import { priceFormat } from '../utils/priceFormat';
 import PropertyMap from './PropertyMap';
@@ -13,6 +13,8 @@ import ContactForm from './ContactForm';
 import { toPng } from 'html-to-image';
 import { transformExtras } from '../utils/extrasConvert';
 import info from '../utils/info_keys.json';
+import PropertyImageGallery from './PropertyImageGallery';
+import { ChevronLeft } from 'lucide-react';
 
 const PropertyDetail: React.FC<{ properties: Property[] }> = ({
   properties,
@@ -30,6 +32,14 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
     setShowPdf((prev) => !prev); // Toggle visibility
   };
 
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate('/'); // Redirect to the home page if there's no history
+    }
+  };
+
   React.useEffect(() => {
     const foundProperty = properties.find((p) => p.id === id) || null;
     if (foundProperty) {
@@ -39,6 +49,22 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
     }
     // console.log('Property:', property);
   }, [id, properties]);
+
+  useEffect(() => {
+    const captureImage = async () => {
+      try {
+        await document.fonts.ready; // ✅ Wait for fonts to load
+        if (componentRef.current) {
+          const dataUrl = await toPng(componentRef.current);
+          setImageData(dataUrl);
+        }
+      } catch (err) {
+        console.error('Error capturing image:', err);
+      }
+    };
+
+    captureImage();
+  }, []);
 
   // Capture image only when property is loaded
   useEffect(() => {
@@ -123,27 +149,44 @@ const PropertyDetail: React.FC<{ properties: Property[] }> = ({
   return (
     <div>
       <div className="max-w-2xl md:max-w-5xl mx-auto p-4">
-        <h1 className="text-3xl font-bold mt-4 mb-4 text-green-800">
-          {property.title}
-        </h1>
+        <div className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4">
+          <button
+            onClick={handleBack}
+            className="flex items-center font-medium text-blue-600"
+          >
+            <ChevronLeft className="mr-1 h-5 w-5" />
+            Volver a la lista
+          </button>
+
+          <div className="flex items-center">
+            <h1 className="font-raleway text-2xl font-bold mt-4 mb-4 text-green-800">
+              {property.title}
+            </h1>
+          </div>
+        </div>
+        <PropertyImageGallery
+          images={property.images}
+          propertyTitle={property.title}
+        />
+
         {property.estadoficha === '7' && (
-          <p className=" bg-red-400 p-4 text-white text-center text-2xl font-bold mb-2 ">
+          <p className=" bg-red-400 p-4 text-white text-center text-2xl font-bold mb-2 mt-2">
             RESERVADO
           </p>
         )}
-        <ImageCarousel images={property.images} />
-        <h1 className="text-2xl font-bold mt-4 mb-2 text-green-800">
+        {/* <ImageCarousel images={property.images} /> */}
+        {/* <h1 className="font-raleway text-2xl font-bold mt-4 mb-2 text-green-800">
           {property.title}
-        </h1>
+        </h1> */}
 
         <div>
           <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-2xl">
             <div className="description">
               {newDescription(property.description)
                 .split('\n')
-                .map((line, index) => (
-                  <div>
-                    <p key={index}>{line}</p>
+                .map((line, index2) => (
+                  <div key={index2}>
+                    <p>{line}</p>
                     <br></br>
                   </div>
                 ))}

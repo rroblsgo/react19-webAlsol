@@ -75,8 +75,9 @@ const EnergyEfficiencyGraph: React.FC<EnergyEfficiencyProps> = ({
       <div className=" h-72 border border-gray-300 rounded-md py-2 px-2 flex flex-row justify-between">
         {/* Barras por letras */}
         <div className="w-[65%] relative border border-1 p-2">
-          {letters.map((letter) => (
+          {letters.map((letter, index) => (
             <div
+              key={index}
               className={`absolute ${calculatePosition(letter)} h-7 ${calculateWidth(letter)} ${calculateColor(letter)} flex items-center my-2`}
             >
               <span

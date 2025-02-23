@@ -9,6 +9,9 @@ export default {
       height: {
         'custom-search': '50rem', // Adjust height as needed
       },
+      fontFamily: {
+        raleway: ['Raleway', 'sans-serif'],
+      },
     },
   },
   plugins: [],
