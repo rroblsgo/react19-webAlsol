@@ -10,7 +10,7 @@ const fetchAPI = async () => {
     console.log(import.meta.env);
     console.log(TOKEN);
 
-    const response = await fetch(`${BASE_URL}/propiedades/?cod_ofer=18972487`, {
+    const response = await fetch(`${BASE_URL}/propiedades/?listado`, {
       method: 'GET',
       headers: {
         Token: `${TOKEN}`,
@@ -32,14 +32,14 @@ const fetchAPI = async () => {
 
 function ApiRest() {
   const [isPending, startTransition] = useTransition();
-  const [city, setCity] = useState('');
-  const [weather, setWeather] = useState();
+  // const [city, setCity] = useState('');
+  const [data, setData] = useState();
 
   const handleSubmit = async () => {
     startTransition(async () => {
       const data = await fetchAPI();
       if (typeof data !== 'string') {
-        setWeather(data);
+        setData(data);
       } else {
         console.log(data);
       }
@@ -49,15 +49,15 @@ function ApiRest() {
   return (
     <div>
       <h1>React version </h1>
-      <input
+      {/* <input
         type="text"
         value={city}
         onChange={(e) => setCity(e.target.value)}
-      />
+      /> */}
       <button onClick={handleSubmit} disabled={isPending}>
-        {isPending ? 'Loading...' : 'Get Weather'}
+        {isPending ? 'Loading...' : 'Petición'}
       </button>
-      {weather && <pre>{JSON.stringify(weather, null, 2)}</pre>}
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </div>
   );
 }

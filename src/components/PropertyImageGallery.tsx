@@ -124,7 +124,7 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
   const FullGallery = () => (
     <div className="fixed inset-0 z-50 flex flex-col bg-white">
       {/* Fixed header */}
-      <div className="sticky top-0 z-10 flex flex-col md:flex-row h-24 md:h-20 mt-4 md:mt-2  items-center justify-evenly border-b bg-white px-4">
+      <div className="sticky top-0 z-10 flex flex-col md:flex-row h-28 md:h-16 mt-4 md:mt-2  items-center justify-evenly border-b bg-white px-4">
         <button
           onClick={handleCloseGallery}
           className="flex items-center font-medium text-blue-600 text-lg"
@@ -135,7 +135,7 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
 
         <div className="flex items-center">
           {/* <h1 className="mr-4 font-semibold">{propertyTitle}</h1> */}
-          <h1 className="font-raleway text-lg md:text-xl  font-bold mt-4 mb-4 text-green-800">
+          <h1 className="font-raleway text-lg md:text-xl  font-bold  mb-4 text-green-800">
             {propertyTitle}
           </h1>
           {/* <button className="mr-4 rounded-full border p-2">Save</button>
@@ -161,7 +161,7 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
                   <div key={index} className="flex flex-col gap-4">
                     {/* Large image */}
                     <div
-                      className="h-[700px] w-full cursor-pointer overflow-hidden rounded-lg"
+                      className="h-[350px] md:h-[700px] w-full cursor-pointer overflow-hidden rounded-lg"
                       onClick={() => openLightbox(index)}
                     >
                       <img
@@ -173,7 +173,7 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
 
                     {/* Two smaller images */}
                     {groupImages.length > 1 && (
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {groupImages.slice(1).map((image, i) => (
                           <div
                             key={image.url}
