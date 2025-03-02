@@ -1,0 +1,49 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            cd /var/api/
+            
+            # Backup environment variables
+            sudo cp alsolweb.es/.env .env
+            
+            # Remove old deployment
+            sudo rm -rf alsolweb.es
+            
+            # Clone the latest version
+            sudo git clone https://github.com/rroblsgo/react19-webAlsol.git /var/api/alsolweb.es
+            
+            # Restore environment variables
+            sudo cp .env alsolweb.es/
+            
+            # Navigate to the project folder
+            cd alsolweb.es
+            
+            # Install dependencies and build the project
+            sudo npm install
+            sudo npm run build
+            
+            # Restart PM2
+            sudo pm2 restart 0
+          EOF
