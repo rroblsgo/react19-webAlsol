@@ -202,10 +202,10 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
 
   // Lightbox for individual image viewing
   const Lightbox = () => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4">
       <button
         onClick={closeLightbox}
-        className="absolute right-4 top-4 text-white transition hover:opacity-80 "
+        className="absolute right-4 top-4 text-white transition hover:opacity-80 z-10"
         aria-label="Close lightbox"
       >
         <X className="h-8 w-8" />
@@ -213,21 +213,28 @@ const PropertyImageGallery: React.FC<PropertyImageGalleryProps> = ({
 
       <button
         onClick={prevImage}
-        className="absolute left-4 text-white transition hover:opacity-80"
+        className="absolute left-4 text-white transition hover:opacity-80 z-10"
         aria-label="Previous image"
       >
         <ChevronLeft className="h-10 w-10" />
       </button>
 
-      <img
+      {/* <img
         src={images[activeImageIndex].url}
         alt={images[activeImageIndex].tag}
         className="max-h-screen max-w-screen-lg object-contain"
-      />
+      /> */}
+      <div className="w-full h-full flex items-center justify-center">
+        <img
+          src={images[activeImageIndex].url}
+          alt={images[activeImageIndex].tag}
+          className="max-h-[85vh] w-auto max-w-full object-contain"
+        />
+      </div>
 
       <button
         onClick={nextImage}
-        className="absolute right-4 text-white transition hover:opacity-80"
+        className="absolute right-4 text-white transition hover:opacity-80 z-10"
         aria-label="Next image"
       >
         <ChevronRight className="h-10 w-10" />
